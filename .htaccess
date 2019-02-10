@@ -1,0 +1,6 @@
+# Use PHP70 as default
+AddHandler application/x-httpd-php70 .php
+DirectoryIndex default.php default.html
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
