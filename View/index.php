@@ -7,6 +7,7 @@
   <body>
 
       <?php
+        //Test Comment
         include('../Controller/DatabaseController.php');
       ?>
       <script src="../Controller/TestController.js"></script>
