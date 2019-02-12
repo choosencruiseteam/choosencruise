@@ -6,19 +6,19 @@
   </head>
   <body>
 
+      <!-- Includes -->
       <?php
         //Test Comment
         include('../Controller/DatabaseController.php');
       ?>
       <script src="../Controller/TestController.js"></script>
 
+      <!-- Run DB Status check -->
       <script>
         checkDBStatus();
+        <?php mysqli_close($DBConnect); ?>
       </script>
 
-      <p> Hello world! <p>
-      <?php
-        mysqli_close($DBConnect);
-      ?>
+      <p> Hello World </p>
   </body>
 </html>
