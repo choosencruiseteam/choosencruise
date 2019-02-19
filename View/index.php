@@ -19,6 +19,7 @@
         <?php mysqli_close($DBConnect); ?>
       </script>
 
+      <!-- This is a test, Tien -->
       <p> Hello World, Tien </p>
   </body>
 </html>
