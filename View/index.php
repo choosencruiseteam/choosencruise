@@ -19,7 +19,9 @@
         <?php mysqli_close($DBConnect); ?>
       </script>
 
-      <!-- This is a test, Tien -->
-      <p> Hello World, Tien </p>
+    <!-- This is a test, Tien -->
+    <!-- Test Comment Nate -->
+    <p> Hello World</p>
+    
   </body>
 </html>
