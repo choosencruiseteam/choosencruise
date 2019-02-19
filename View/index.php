@@ -18,7 +18,7 @@
         checkDBStatus();
         <?php mysqli_close($DBConnect); ?>
       </script>
-
+<!-- Test Comment Nate -->
       <p> Hello World </p>
   </body>
 </html>
