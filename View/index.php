@@ -6,22 +6,13 @@
   </head>
   <body>
 
-      <!-- Includes -->
-      <?php
-        //Test Comment
-        include('../Controller/DatabaseController.php');
-      ?>
-      <script src="../Controller/TestController.js"></script>
-
-      <!-- Run DB Status check -->
-      <script>
-        checkDBStatus();
-        <?php mysqli_close($DBConnect); ?>
-      </script>
+      <!-- Test section for database functions -->
+    <script src="../View/index_ContentView"></script>
 
     <!-- This is a test, Tien -->
     <!-- Test Comment Nate -->
     <p> Hello World</p>
-    
+    <p id="get-php"><p>
+
   </body>
 </html>
