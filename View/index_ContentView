@@ -1,0 +1,15 @@
+
+function reqListener() {
+  console.log(this.responseText);
+}
+
+//When page is loaded, query DB for list of Make, Model, years
+var onLoadReq = new XMLHttpRequest();
+onLoadReq.onload = function() {
+
+  $JSON = JSON.parse(this.responseText);
+  //document.getElementById("get-php").innerHTML = JSON.stringify($JSON);
+  //console.debug(JSON.parse(this.responseText));
+};
+onLoadReq.open("get", "../Controller/get-all-cars.php?make=", true);
+onLoadReq.send();
