@@ -39,5 +39,22 @@
     public function getTrim(){ return $this->trim; }
     public function getEngine(){return $this->engine; }
     public function getTransmission(){return $this->transmission;}
+
+    public function toAssocObject(){
+      $newArray = array();
+
+      $newArray['vin'] = $this->vin;
+      $newArray['carlot_id'] = $this->carlot_id;
+      $newArray['posted_price'] = $this->carlot_posted_price;
+      $newArray['price_last_updated'] = $this->carlot_price_last_updated;
+      $newArray['make'] = $this->make;
+      $newArray['model'] = $this->model;
+      $newArray['year'] = $this->year;
+      $newArray['trim'] = $this->trim;
+      $newArray['engine'] = $this->engine;
+      $newArray['transmission'] = $this->transmission;
+
+      return $newArray;
+    }
   }
  ?>
