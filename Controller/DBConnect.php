@@ -1,9 +1,13 @@
 <?php
 
+  /*
   $user = "root";
 	$pass = "";
 	$host = "localhost";
 	$DBName = "choosencruise";
+  */
+  
+  include("AWS_Creds.php");
 
 	$DBConnect = mysqli_connect($host, $user, $pass);
 
@@ -21,6 +25,7 @@
 		}
 	}
 
+    /*
     $output = "";
 
     if($DBConnect == TRUE)
@@ -33,5 +38,5 @@
     }
 
     echo "<script>alert(".json_encode($output).")</script>";
-
+    */
 ?>
