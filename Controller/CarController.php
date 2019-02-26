@@ -1,5 +1,5 @@
 <?php
-  include("../Model/car.php");
+  include("../Model/Car.php");
 
   class CarController{
 
