@@ -142,9 +142,9 @@ $(document).ready(function() {
     $("#cartable").html(headerRow + loadRow);
 
     if (make === "null" && model === "null" && year === "null") {
-      var getString = "../Controller/get-car.php?table=true";
+      var getString = "../Controller/get-car.php?where=false";
     } else {
-      var getString = "../Controller/get-car.php?table=false";
+      var getString = "../Controller/get-car.php?where=true";
       var searchTerms = [];
 
       if (make !== "null") {
