@@ -1,9 +1,13 @@
 <?php
 
+  /*
   $user = "root";
 	$pass = "";
 	$host = "localhost";
 	$DBName = "choosencruise";
+  */
+  
+  include("AWS_Creds.php");
 
 	$DBConnect = mysqli_connect($host, $user, $pass);
 
@@ -20,20 +24,19 @@
 			$DBConnect = FALSE;
 		}
 	}
-?>
 
-<!-- Print DB Status to hidden field-->
-<div id="Database-Status" style="display: none;">
-<?php
+    /*
+    $output = "";
+
     if($DBConnect == TRUE)
     {
       $output = "Database is connected";
-      echo json_encode($output);
     }
     else
     {
       $output = "Could not connect to Database";
-      echo json_encode($output);
     }
+
+    echo "<script>alert(".json_encode($output).")</script>";
+    */
 ?>
-</div>
