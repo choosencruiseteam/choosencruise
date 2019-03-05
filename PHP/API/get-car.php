@@ -20,7 +20,7 @@ values passed in the URL, the file will respond with a array of the query
 result
 
 Variables:
-(GLOBAL) $DBConnect - Database connection used for queries.
+$DBConnect - Database connection used for queries.
 
 Need to know:
 where GET variable name is used to determine if WHERE clause is used
