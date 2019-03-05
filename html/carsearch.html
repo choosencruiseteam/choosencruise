@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Page Title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="../library/jquery-3.3.1.js"></script>
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../javascript/carsearch.js"></script>
+
+</head>
+
+<body>
+
+  <!-- **Header div**
+    Loaded using: ../View/Index/JS/Index.js
+  -->
+  <div class="header" id="header"></div>
+
+  <div class="main">
+    <h2>SEARCH FOR A CAR</h2>
+    <h3>TODO:</h3>
+    <ul>
+      <li>Implement location/distance feature</li>
+      <li>Implement card-centric car display area</li>
+    </ul>
+
+    <!-- Drop down menus to narrow car search -->
+    <div class="search_dropdown_container">
+      Make:<select placeholder="Make" name="make" id="make_dropdown" />
+      <option value="loading">Loading...</option></select>
+      &nbsp;Model:<select placeholder="Model" name="model" id="model_dropdown" />
+      <option value="loading">Loading...</option></select>
+      &nbsp;Year:<select placeholder="Year" name="year" id="year_dropdown" />
+      <option value="loading">Loading...</option></select>
+      &nbsp;<button type="button" id="submitCarSearch">Submit</button>
+    </div>
+
+    <!-- Element to output car search -->
+    <table id="cartable"></table>
+
+  </div>
+
+  <!-- **Footer div**
+    Loaded using: ../View/Index/JS/Index.js
+  -->
+  <div class="footer" id="footer"></div>
+
+</body>
+
+</html>

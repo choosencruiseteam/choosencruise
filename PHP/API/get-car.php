@@ -1,49 +1,59 @@
 <?php
   //include('../Controller/DBConnect.php');
-  include('../Controller/ConnectionFactory.php');
-  include('../Controller/CarController.php');
+  include('../Controllers/ConnectionFactory.php');
+  include('../Controllers/DBController.php');
 
-  //Get static database connection
-  try {
-      $DBConnect = ConnectionFactory::getFactory()->getConnection();
-  } catch (Exception $e) {
-      echo json_encode("Error in establishing database connection: " . $e);
-  }
 
-/********************************************************************
-get-car.php
 
-What?
+/**********************    get-car.php      *****************************
+By: Chris Torres
+Version: 1.0
+Date: 3/4/2019
+
+Purpose:
 Fufill server side requests for data in the car table use GET
 method via URL.
 
-Why?
-This file fufills AJAX requests from the front end JQuery routines.
+Description:
+This file fufills AJAX requests from the front end JQuery routines. Using Get
+values passed in the URL, the file will respond with a array of the query
+result
 
-Example URLS:
+Variables:
+$DBConnect - Database connection used for queries.
 
-table is used to determine if WHERE clause is used
+Need to know:
+where GET variable name is used to determine if WHERE clause is used
 where=true (yes)
 where=false (no)
 
-get-car.php?table=true
+****** Example URLS: *********
+
+get-car.php?where=false
 -Get all columns and all cars from database.
 
-get-car.php?table=false&make="Toyota"&model="Camry"&year="2018"
+get-car.php?where=true&make="Toyota"&model="Camry"&year="2018"
 -Get a car filtered in WHERE clause via make,model,year
 
-get-car.php?
 *********************************************************************/
+
+//Get static database connection
+try {
+    $DBConnect = ConnectionFactory::getFactory()->getConnection();
+} catch (Exception $e) {
+    echo json_encode("Error in establishing database connection: " . $e);
+}
 
   /*****************************************
       Get search terms for dropdown menu
   *****************************************/
   if (isset($_GET['search'])) {
+
       if (isset($_GET['make']) && isset($_GET['model']) && isset($_GET['year'])) {
           //get * from car where make, model, year
       } elseif (isset($_GET['make']) && isset($_GET['model'])) {
           //get years with make and model
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
           $make = $_GET['make'];
           $model = $_GET['model'];
           $SQLString = "SELECT distinct year FROM cars WHERE make=". $make .
@@ -52,13 +62,13 @@ get-car.php?
           echo json_encode($list);
       } elseif (isset($_GET['make'])) {
           //get models with make filter
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
           $make = $_GET['make'];
           $SQLString = "SELECT distinct model FROM cars WHERE make=". $make;
           $list = $cc->queryGetList($SQLString);
           echo json_encode($list);
       } else {
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
           $list = $cc->queryGetList("SELECT distinct make FROM cars");
           echo json_encode($list);
       }
@@ -69,7 +79,7 @@ get-car.php?
 **********************************/
   if (isset($_GET['where'])) {
       if ($_GET['where'] === "false") {
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
 
           $SQLString = 'SELECT vin,carlot_id,carlot_posted_price,
                     carlot_price_last_updated,make,model,trim,
@@ -78,7 +88,7 @@ get-car.php?
           $list = $cc->queryGetList($SQLString);
           echo json_encode($list);
       } elseif ($_GET['where'] === "true") {
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
           $filterList = array();
 
           $SQLString = "SELECT vin,carlot_id,carlot_posted_price,

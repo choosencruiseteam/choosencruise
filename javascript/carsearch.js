@@ -4,11 +4,16 @@ $(document).ready(function() {
                 ON PAGE LOADERS
   ********************************************/
 
+  //Load head and footer data
+  $('#header').load('../html/header.html');
+  $('#footer').load('../html/footer.html');
+
   /*
     #make_dropdown - inflate make_dropdown with list of makes
   */
-  $.get("../Controller/get-car.php?search=true", function(data, status) {
-    //Parse incoming data
+  $.get("/choosencruise/PHP/API/get-car.php?search=true", function(data, status) {
+
+    //Parse incoming data into manipulatable array
     var jsonData = JSON.parse(data);
     //Build option list for <select> element
     var list = "<option value=\"null\">Choose...</option>";
@@ -24,17 +29,15 @@ $(document).ready(function() {
     document.getElementById("model_dropdown").innerHTML = nullOption;
     document.getElementById("year_dropdown").innerHTML = nullOption;
 
-    //Debug Logging
-    console.debug("Status:" + status + " ::" + jsonData[0]);
   });
 
   /*
     #cartable - Initialize cartable
   */
-  var headerRow = "<tr><th>VIN</th><th>Carlot ID</th><th>Posted Price</th>"+
-                     "<th>Price updated</th><th>Make</th><th>Model</th>"+
-                     "<th>Trim</th><th>Year</th><th>Engine</th>"+
-                     "<th>Transmission</th></tr>";
+  var headerRow = "<tr><th>VIN</th><th>Carlot ID</th><th>Posted Price</th>" +
+    "<th>Price updated</th><th>Make</th><th>Model</th>" +
+    "<th>Trim</th><th>Year</th><th>Engine</th>" +
+    "<th>Transmission</th></tr>";
   var emptyRow = "<tr><td colspan=11 style=\"text-align:center\" >Please search for an item...</td></tr>";
   $("#cartable").html(headerRow + emptyRow);
 
@@ -54,7 +57,7 @@ $(document).ready(function() {
       document.getElementById("year_dropdown").innerHTML = loadingStatus;
 
       //GET request for years WHERE make=make.val()
-      $.get("../Controller/get-car.php?search=true&make=\"" + make + "\"", function(data, status) {
+      $.get("/choosencruise/PHP/API/get-car.php?search=true&make=\"" + make + "\"", function(data, status) {
         //Parse incoming data
         var jsonData = JSON.parse(data);
         //build option list for <select> element
@@ -70,8 +73,6 @@ $(document).ready(function() {
         var nullOption = "<option value=\"null\">-</option>";
         document.getElementById("year_dropdown").innerHTML = nullOption;
 
-        //Debug logging
-        console.debug("Status:" + status + " ::" + jsonData[0]);
       });
     } else {
       //Null #model_dropdown and #year_dropdown
@@ -100,7 +101,7 @@ $(document).ready(function() {
       document.getElementById("year_dropdown").innerHTML = loadingStatus;
 
       //GET request for years
-      var getString = "../Controller/get-car.php?search=true"
+      var getString = "/choosencruise/PHP/API/get-car.php?search=true"
       getString += "&make=\"" + make + "\"";
       getString += "&model=\"" + model + "\"";
 
@@ -117,8 +118,6 @@ $(document).ready(function() {
         //assign option list to dropdown
         document.getElementById("year_dropdown").innerHTML = list;
 
-        //Debug logging
-        console.debug("Status:" + status + " ::" + jsonData[0]);
       });
 
 
@@ -132,8 +131,11 @@ $(document).ready(function() {
   /*******************************************
   ON CLICK LISTENER | search submit button
   *******************************************/
+
+  //Submit button listener
   $("#submitCarSearch").click(function() {
 
+    //Get search terms
     var make = $("#make_dropdown").val();
     var model = $("#model_dropdown").val();
     var year = $("#year_dropdown").val();
@@ -141,10 +143,17 @@ $(document).ready(function() {
     var loadRow = "<tr><td colspan=11 style=\"text-align:center\" >Loading...Please wait</td></tr>";
     $("#cartable").html(headerRow + loadRow);
 
+    /*
+      If all search terms (all dropdowns) are null, the search will default to
+      getting all the cars in the database. Otherwise a search will
+      be done with any of the provided search terms.
+    */
     if (make === "null" && model === "null" && year === "null") {
-      var getString = "../Controller/get-car.php?where=false";
+      //If where=false, all cars will be requested from DB
+      var getString = "/choosencruise/PHP/API/get-car.php?where=false";
     } else {
-      var getString = "../Controller/get-car.php?where=true";
+      //If where=true, the query will be filtered by the search terms
+      var getString = "/choosencruise/PHP/API/get-car.php?where=true";
       var searchTerms = [];
 
       if (make !== "null") {
@@ -162,21 +171,21 @@ $(document).ready(function() {
         getString += searchTerms[i];
       }
     }
-    console.debug("GET:" + getString);
+    // GET request to server for cars that will build car
+    // table data.
     $.get(getString, function(data, status) {
-        var jsonData = JSON.parse(data)
-        console.log("Status:" + status + " Data:" + jsonData[0]);
+      var jsonData = JSON.parse(data)
 
-        var body = "";
-        for(var i = 0; i < jsonData.length; ++i){
-            body += "<tr>"
-          for(var j = 0; j < jsonData[i].length; ++j){
-            body += "<td>" + jsonData[i][j] + "</td>";
-          }
-          body += "</tr>";
+      var body = "";
+      for (var i = 0; i < jsonData.length; ++i) {
+        body += "<tr>"
+        for (var j = 0; j < jsonData[i].length; ++j) {
+          body += "<td>" + jsonData[i][j] + "</td>";
         }
+        body += "</tr>";
+      }
 
-          $("#cartable").html(headerRow + body);
+      $("#cartable").html(headerRow + body);
     });
   });
 
