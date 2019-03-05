@@ -1,9 +1,6 @@
 $(document).ready(function() {
-  $.loadHeader = function(){
-    $('#header').load('header/header.html');
-  }
-});
 
-function displayHeader(){
-  $.loadHeader();
-}
+    $('#header').load('../View/Header/Header.html');
+    $('#footer').load('../View/Footer/Footer.html');
+
+});
