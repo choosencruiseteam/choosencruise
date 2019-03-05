@@ -13,7 +13,7 @@ $(document).ready(function() {
   */
   $.get("/choosencruise/PHP/API/get-car.php?search=true", function(data, status) {
 
-    //Parse incoming data
+    //Parse incoming data into manipulatable array
     var jsonData = JSON.parse(data);
     //Build option list for <select> element
     var list = "<option value=\"null\">Choose...</option>";
