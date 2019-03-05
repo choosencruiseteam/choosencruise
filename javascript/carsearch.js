@@ -5,15 +5,14 @@ $(document).ready(function() {
   ********************************************/
 
   //Load head and footer data
-  $('#header').load('../Header/Header.html');
-  $('#footer').load('../Footer/Footer.html');
+  $('#header').load('../html/header.html');
+  $('#footer').load('../html/footer.html');
 
   /*
     #make_dropdown - inflate make_dropdown with list of makes
   */
   $.get("/choosencruise/PHP/API/get-car.php?search=true", function(data, status) {
 
-    console.debug("Status:" + status);
     //Parse incoming data
     var jsonData = JSON.parse(data);
     //Build option list for <select> element
