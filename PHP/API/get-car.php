@@ -1,7 +1,7 @@
 <?php
   //include('../Controller/DBConnect.php');
-  include('../Controller/ConnectionFactory.php');
-  include('../Controller/CarController.php');
+  include('../Controllers/ConnectionFactory.php');
+  include('../Controllers/DBController.php');
 
 
 
@@ -53,7 +53,7 @@ try {
           //get * from car where make, model, year
       } elseif (isset($_GET['make']) && isset($_GET['model'])) {
           //get years with make and model
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
           $make = $_GET['make'];
           $model = $_GET['model'];
           $SQLString = "SELECT distinct year FROM cars WHERE make=". $make .
@@ -62,13 +62,13 @@ try {
           echo json_encode($list);
       } elseif (isset($_GET['make'])) {
           //get models with make filter
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
           $make = $_GET['make'];
           $SQLString = "SELECT distinct model FROM cars WHERE make=". $make;
           $list = $cc->queryGetList($SQLString);
           echo json_encode($list);
       } else {
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
           $list = $cc->queryGetList("SELECT distinct make FROM cars");
           echo json_encode($list);
       }
@@ -79,7 +79,7 @@ try {
 **********************************/
   if (isset($_GET['where'])) {
       if ($_GET['where'] === "false") {
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
 
           $SQLString = 'SELECT vin,carlot_id,carlot_posted_price,
                     carlot_price_last_updated,make,model,trim,
@@ -88,7 +88,7 @@ try {
           $list = $cc->queryGetList($SQLString);
           echo json_encode($list);
       } elseif ($_GET['where'] === "true") {
-          $cc = new CarController($DBConnect);
+          $cc = new DBController($DBConnect);
           $filterList = array();
 
           $SQLString = "SELECT vin,carlot_id,carlot_posted_price,

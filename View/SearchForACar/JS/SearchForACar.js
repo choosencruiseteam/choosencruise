@@ -4,10 +4,14 @@ $(document).ready(function() {
                 ON PAGE LOADERS
   ********************************************/
 
+  //Load head and footer data
+  $('#header').load('../Header/Header.html');
+  $('#footer').load('../Footer/Footer.html');
+
   /*
     #make_dropdown - inflate make_dropdown with list of makes
   */
-  $.get("../Controller/get-car.php?search=true", function(data, status) {
+  $.get("/choosencruise/PHP/API/get-car.php?search=true", function(data, status) {
 
     console.debug("Status:" + status);
     //Parse incoming data
@@ -54,7 +58,7 @@ $(document).ready(function() {
       document.getElementById("year_dropdown").innerHTML = loadingStatus;
 
       //GET request for years WHERE make=make.val()
-      $.get("../Controller/get-car.php?search=true&make=\"" + make + "\"", function(data, status) {
+      $.get("/choosencruise/PHP/API/get-car.php?search=true&make=\"" + make + "\"", function(data, status) {
         //Parse incoming data
         var jsonData = JSON.parse(data);
         //build option list for <select> element
@@ -98,7 +102,7 @@ $(document).ready(function() {
       document.getElementById("year_dropdown").innerHTML = loadingStatus;
 
       //GET request for years
-      var getString = "../Controller/get-car.php?search=true"
+      var getString = "/choosencruise/PHP/API/get-car.php?search=true"
       getString += "&make=\"" + make + "\"";
       getString += "&model=\"" + model + "\"";
 
@@ -147,10 +151,10 @@ $(document).ready(function() {
     */
     if (make === "null" && model === "null" && year === "null") {
       //If where=false, all cars will be requested from DB
-      var getString = "../Controller/get-car.php?where=false";
+      var getString = "/choosencruise/PHP/API/get-car.php?where=false";
     } else {
       //If where=true, the query will be filtered by the search terms
-      var getString = "../Controller/get-car.php?where=true";
+      var getString = "/choosencruise/PHP/API/get-car.php?where=true";
       var searchTerms = [];
 
       if (make !== "null") {
