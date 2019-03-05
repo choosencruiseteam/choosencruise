@@ -3,42 +3,52 @@
   include('../Controller/ConnectionFactory.php');
   include('../Controller/CarController.php');
 
-  //Get static database connection
-  try {
-      $DBConnect = ConnectionFactory::getFactory()->getConnection();
-  } catch (Exception $e) {
-      echo json_encode("Error in establishing database connection: " . $e);
-  }
 
-/********************************************************************
-get-car.php
 
-What?
+/**********************    get-car.php      *****************************
+By: Chris Torres
+Version: 1.0
+Date: 3/4/2019
+
+Purpose:
 Fufill server side requests for data in the car table use GET
 method via URL.
 
-Why?
-This file fufills AJAX requests from the front end JQuery routines.
+Description:
+This file fufills AJAX requests from the front end JQuery routines. Using Get
+values passed in the URL, the file will respond with a array of the query
+result
 
-Example URLS:
+Variables:
+(GLOBAL) $DBConnect - Database connection used for queries.
 
-table is used to determine if WHERE clause is used
+Need to know:
+where GET variable name is used to determine if WHERE clause is used
 where=true (yes)
 where=false (no)
 
-get-car.php?table=true
+****** Example URLS: *********
+
+get-car.php?where=false
 -Get all columns and all cars from database.
 
-get-car.php?table=false&make="Toyota"&model="Camry"&year="2018"
+get-car.php?where=true&make="Toyota"&model="Camry"&year="2018"
 -Get a car filtered in WHERE clause via make,model,year
 
-get-car.php?
 *********************************************************************/
+
+//Get static database connection
+try {
+    $DBConnect = ConnectionFactory::getFactory()->getConnection();
+} catch (Exception $e) {
+    echo json_encode("Error in establishing database connection: " . $e);
+}
 
   /*****************************************
       Get search terms for dropdown menu
   *****************************************/
   if (isset($_GET['search'])) {
+
       if (isset($_GET['make']) && isset($_GET['model']) && isset($_GET['year'])) {
           //get * from car where make, model, year
       } elseif (isset($_GET['make']) && isset($_GET['model'])) {

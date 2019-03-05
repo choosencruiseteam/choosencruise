@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Page Title</title>
   <script src="../Libraries/jquery-3.3.1.js"></script>
@@ -34,8 +35,8 @@
     }
 
     th, td {
-      padding: 10px;
-      text-align: left;
+      padding: 5px;
+      text-align: center;
     }
 
     th {
@@ -121,6 +122,7 @@
       flex: 30%;
       background-color: #f1f1f1;
       padding: 20px;
+      width:100%
     }
 
     /* Main column */
@@ -130,6 +132,7 @@
       flex: 70%;
       background-color: white;
       padding: 20px;
+      width:100%
     }
 
     /* Fake image, just for this example */
@@ -172,44 +175,30 @@
 
   <div class="navbar">
     <a href="#" class="active">Home</a>
-    <a href="#">BUY</a>
+
+    <a href="#">Search for a car</a>
+    <!--
     <a href="#">SELL</a>
+  -->
     <a href="#" class="right">Login</a>
     <a href="#" class="right">Sign Up</a>
   </div>
 
-  <div class="row">
-    <div class="side">
-      <h2>About Me</h2>
-      <h5>Photo of me:</h5>
-      <div class="fakeimg" style="height:200px;">Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-      <h3>More Text</h3>
-      <p>Lorem ipsum dolor sit ame.</p>
-      <div class="fakeimg" style="height:60px;">Image</div><br>
-      <div class="fakeimg" style="height:60px;">Image</div><br>
-      <div class="fakeimg" style="height:60px;">Image</div>
+  <div class="main">
+    <h2>TITLE HEADING</h2>
+    <h5>Title description, Dec 7, 2017</h5>
+    <div class="search_dropdown_container">
+      Make:<select placeholder="Make" name="make" id="make_dropdown" />
+      <option value="loading">Loading...</option></select>
+      &nbsp;Model:<select placeholder="Model" name="model" id="model_dropdown" />
+      <option value="loading">Loading...</option></select>
+      &nbsp;Year:<select placeholder="Year" name="year" id="year_dropdown" />
+      <option value="loading">Loading...</option></select>
+      &nbsp;<button type="button" id="submitCarSearch">Submit</button>
     </div>
-    <div class="main">
-      <h2>TITLE HEADING</h2>
-      <h5>Title description, Dec 7, 2017</h5>
-      <div class="search_dropdown_container">
-        Make:<select placeholder="Make" name="make" id="make_dropdown" /><option value="loading">Loading...</option></select>
-        &nbsp;Model:<select placeholder="Model" name="model" id="model_dropdown" /><option value="loading">Loading...</option></select>
-        &nbsp;Year:<select placeholder="Year" name="year" id="year_dropdown" /><option value="loading">Loading...</option></select>
-        &nbsp;<button type="button" id="submitCarSearch">Submit</button>
-      </div>
-      <table id="cartable"></table>
-      <div class="fakeimg" style="height:200px;">Image</div>
-      <p>Some text..</p>
-      <p id="textbox" >Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-      <br>
-      <h2>TITLE HEADING</h2>
-      <h5>Title description, Sep 2, 2017</h5>
-      <div class="fakeimg" style="height:200px;">Image</div>
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-    </div>
+    <table id="cartable"></table>
+
+  </div>
   </div>
 
   <div class="footer">
