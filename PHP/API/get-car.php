@@ -48,7 +48,6 @@ try {
       Get search terms for dropdown menu
   *****************************************/
   if (isset($_GET['search'])) {
-
       if (isset($_GET['make']) && isset($_GET['model']) && isset($_GET['year'])) {
           //get * from car where make, model, year
       } elseif (isset($_GET['make']) && isset($_GET['model'])) {
@@ -58,18 +57,18 @@ try {
           $model = $_GET['model'];
           $SQLString = "SELECT distinct year FROM cars WHERE make=". $make .
       "AND model=" . $model;
-          $list = $cc->queryGetList($SQLString);
+          $list = $cc->queryGetArray($SQLString);
           echo json_encode($list);
       } elseif (isset($_GET['make'])) {
           //get models with make filter
           $cc = new DBController($DBConnect);
           $make = $_GET['make'];
           $SQLString = "SELECT distinct model FROM cars WHERE make=". $make;
-          $list = $cc->queryGetList($SQLString);
+          $list = $cc->queryGetArray($SQLString);
           echo json_encode($list);
       } else {
           $cc = new DBController($DBConnect);
-          $list = $cc->queryGetList("SELECT distinct make FROM cars");
+          $list = $cc->queryGetArray("SELECT distinct make FROM cars");
           echo json_encode($list);
       }
   }
@@ -78,22 +77,42 @@ try {
       Get car record from DB
 **********************************/
   if (isset($_GET['where'])) {
+      //if WHERE clause is not requested, get all cars
       if ($_GET['where'] === "false") {
           $cc = new DBController($DBConnect);
 
+          /*
           $SQLString = 'SELECT vin,carlot_id,carlot_posted_price,
                     carlot_price_last_updated,make,model,trim,
                     year,engine,transmission FROM cars';
+          */
 
-          $list = $cc->queryGetList($SQLString);
+          $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price, DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
+                               c.make,c.model,c.trim,c.year, cl.name,cl.street,
+                               cl.state,cl.city,cl.zip
+                        FROM cars AS c
+                        INNER JOIN carlots AS cl ON
+                        c.carlot_id=cl.carlot_id';
+
+          $list = $cc->queryGetAssoc($SQLString);
           echo json_encode($list);
+      //if WHERE clause is requested, get all filter terms
       } elseif ($_GET['where'] === "true") {
           $cc = new DBController($DBConnect);
           $filterList = array();
 
-          $SQLString = "SELECT vin,carlot_id,carlot_posted_price,
+          /*
+          $SQLString = "SELECT carlot_id,carlot_posted_price,
                     carlot_price_last_updated,make,model,trim,
                     year,engine,transmission FROM cars";
+          */
+          
+          $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price, DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
+                               c.make,c.model,c.trim,c.year, cl.name,cl.street,
+                               cl.state,cl.city,cl.zip
+                        FROM cars AS c
+                        INNER JOIN carlots AS cl ON
+                        c.carlot_id=cl.carlot_id';
 
           if (isset($_GET['make']) && $_GET['make'] !== null) {
               $filter = " make=" . $_GET['make'] . " ";
@@ -108,10 +127,12 @@ try {
               array_push($filterList, $filter);
           }
 
+          //Add WHERE clause to SQL query, if filter terms retrieved
           if (count($filterList) > 0) {
               $SQLString .= " WHERE";
           }
 
+          //If filter terms exists, append to SQL Query
           for ($i = 0; $i < count($filterList); ++$i) {
               $SQLString .= $filterList[$i];
 
@@ -120,7 +141,8 @@ try {
               }
           }
 
-          $list = $cc->queryGetList($SQLString);
+
+          $list = $cc->queryGetAssoc($SQLString);
 
           echo json_encode($list);
       }
