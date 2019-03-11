@@ -1,10 +1,4 @@
 <?php
-  //include('../Controller/DBConnect.php');
-  include('../Controllers/ConnectionFactory.php');
-  include('../Controllers/DBController.php');
-
-
-
 /**********************    get-car.php      *****************************
 By: Chris Torres
 Version: 1.0
@@ -37,6 +31,10 @@ get-car.php?where=true&make="Toyota"&model="Camry"&year="2018"
 
 *********************************************************************/
 
+//include('../Controller/DBConnect.php');
+include('../Controllers/ConnectionFactory.php');
+include('../Controllers/DBController.php');
+
 //Get static database connection
 try {
     $DBConnect = ConnectionFactory::getFactory()->getConnection();
@@ -44,50 +42,66 @@ try {
     echo json_encode("Error in establishing database connection: " . $e);
 }
 
-  /*****************************************
+  /*****************************************************************************
       Get search terms for dropdown menu
-  *****************************************/
+  *****************************************************************************/
   if (isset($_GET['search'])) {
-      if (isset($_GET['make']) && isset($_GET['model']) && isset($_GET['year'])) {
-          //get * from car where make, model, year
-      } elseif (isset($_GET['make']) && isset($_GET['model'])) {
-          //get years with make and model
-          $cc = new DBController($DBConnect);
-          $make = $_GET['make'];
-          $model = $_GET['model'];
-          $SQLString = "SELECT distinct year FROM cars WHERE make=". $make .
+      if ($_GET['search'] === "true") {
+          if (isset($_GET['make']) && isset($_GET['model'])) {
+              //get years with make and model
+              $cc = new DBController($DBConnect);
+              $make = $_GET['make'];
+              $model = $_GET['model'];
+              $SQLString = "SELECT distinct year FROM cars WHERE make=". $make .
       "AND model=" . $model;
-          $list = $cc->queryGetArray($SQLString);
-          echo json_encode($list);
-      } elseif (isset($_GET['make'])) {
-          //get models with make filter
+              $list = $cc->queryGetArray($SQLString);
+              echo json_encode($list);
+          } elseif (isset($_GET['make'])) {
+              //get models with make filter
+              $cc = new DBController($DBConnect);
+              $make = $_GET['make'];
+              $SQLString = "SELECT distinct model FROM cars WHERE make=". $make;
+              $list = $cc->queryGetArray($SQLString);
+              echo json_encode($list);
+          } else {
+              $cc = new DBController($DBConnect);
+              $list = $cc->queryGetArray("SELECT distinct make FROM cars");
+              echo json_encode($list);
+          }
+      } elseif ($_GET['search'] === "false") {
           $cc = new DBController($DBConnect);
-          $make = $_GET['make'];
-          $SQLString = "SELECT distinct model FROM cars WHERE make=". $make;
-          $list = $cc->queryGetArray($SQLString);
-          echo json_encode($list);
-      } else {
-          $cc = new DBController($DBConnect);
-          $list = $cc->queryGetArray("SELECT distinct make FROM cars");
+          $list = $cc->queryGetArray("SELECT make,model,year FROM cars");
           echo json_encode($list);
       }
   }
 
-/**********************************
-      Get car record from DB
-**********************************/
+/*******************************************************************************
+      Get car record from DB with WHERE clause as an option
+*******************************************************************************/
   if (isset($_GET['where'])) {
       //if WHERE clause is not requested, get all cars
       if ($_GET['where'] === "false") {
           $cc = new DBController($DBConnect);
 
-          /*
-          $SQLString = 'SELECT vin,carlot_id,carlot_posted_price,
-                    carlot_price_last_updated,make,model,trim,
-                    year,engine,transmission FROM cars';
-          */
+          //Set distance filter
+          If(isset($_GET['location']) && isset($_GET['distance'])){
+            $result = $cc->queryGetArray('SELECT distinct zip FROM carlots');
 
-          $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price, DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
+            $url = 'get-zip.php?';
+            $origin = 'origin=' . $_GET['location'];
+            $distance = '&distance=' . $_GET['distance'];
+            $dest = '';
+
+            for($i = 0; $i < length($result); $i++){
+              $dest .= '&dest'. $i . '=' . $result[$i];
+            }
+            $verifiedZips = file_get_contents($url.$distance.$origin.$dest);
+
+
+          }
+
+          $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price,
+                   DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
                                c.make,c.model,c.trim,c.year, cl.name,cl.street,
                                cl.state,cl.city,cl.zip
                         FROM cars AS c
@@ -106,8 +120,9 @@ try {
                     carlot_price_last_updated,make,model,trim,
                     year,engine,transmission FROM cars";
           */
-          
-          $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price, DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
+
+          $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price,
+                   DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
                                c.make,c.model,c.trim,c.year, cl.name,cl.street,
                                cl.state,cl.city,cl.zip
                         FROM cars AS c
@@ -126,6 +141,8 @@ try {
               $filter = " year=" . $_GET['year'] . " ";
               array_push($filterList, $filter);
           }
+
+          //
 
           //Add WHERE clause to SQL query, if filter terms retrieved
           if (count($filterList) > 0) {
@@ -147,3 +164,4 @@ try {
           echo json_encode($list);
       }
   }
+?>
