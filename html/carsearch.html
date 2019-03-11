@@ -2,9 +2,12 @@
 <html lang="en">
 
 <head>
-  <title>Page Title</title>
+  <title>Search For a Car</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#007bff">
+  <link rel=icon href="../assets/favicon.ico">
 
   <!-- Bootstrap CSS (Internet req)
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -22,7 +25,7 @@
     <div class="container-fluid">
 
       <div class="row my-4">
-        <div class="jumbotron jumbotron-fluid border shadow-sm rounded">
+        <div class="jumbotron jumbotron-fluid border border-primary shadow rounded p-2">
           <div class="container-fluid">
             <div class="row">
               <div class="col mb-4">
@@ -33,7 +36,7 @@
                 <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>(Coming Soon)
               </div>
               <div class="col">
-                <img src="../assets/timothy-muza-572-unsplash.jpg" alt="Photo by timothy muza on Unsplash" class="img-fluid" style="min-width:300px;max-width:520px;
+                <img src="../assets/timothy-muza-572-unsplash-500.png" alt="Photo by timothy muza on Unsplash" class="img-fluid" style="min-width:300px;max-width:520px;
                      width:100%;height:auto;">
               </div>
             </div>
@@ -43,7 +46,7 @@
 
       <div class="row">
         <div class="col-sm-3" style="min-width:160px" border>
-          <div class="border p-2  mx-2 mb-4 shadow-sm bg-white rounded">
+          <div class="border border-primary p-2  mx-2 mb-4 shadow bg-white rounded" style="background-color:#dee2e6!important">
             <h4>Narrow your options</h4>
             <hr>
             <form>
@@ -84,10 +87,10 @@
           </div>
         </div>
 
-        <div class="col-sm-8 p-2 border shadow-sm bg-white rounded">
+        <div class="col-sm-8 p-2 mx-4 border border-primary shadow bg-white rounded">
           <h4>Choose your car</h4>
           <hr>
-          <div class="card-deck p-2" id="card_deck">
+          <div class="card-deck p-2" id="card_deck" style="min-height:600px!important">
             <div class="card px-1">
               <h3>&#8592; Start your search...</h3>
             </div>
@@ -110,7 +113,7 @@
   -->
 
 
-  <script src="../library/jquery-3.3.1.js"></script>
+  <script src="../library/jquery-3.3.1.min.js"></script>
   <script src="../library/bootstrap-4.3.1-dist/popper.min.js"></script>
   <script src="../library/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 
