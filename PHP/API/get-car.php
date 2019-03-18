@@ -53,7 +53,7 @@ try {
               $make = $_GET['make'];
               $model = $_GET['model'];
               $SQLString = "SELECT distinct year FROM cars WHERE make=". $make .
-      "AND model=" . $model;
+                "AND model=" . $model;
               $list = $cc->queryGetArray($SQLString);
               echo json_encode($list);
           } elseif (isset($_GET['make'])) {
@@ -82,23 +82,7 @@ try {
       //if WHERE clause is not requested, get all cars
       if ($_GET['where'] === "false") {
           $cc = new DBController($DBConnect);
-
-          //Set distance filter
-          If(isset($_GET['location']) && isset($_GET['distance'])){
-            $result = $cc->queryGetArray('SELECT distinct zip FROM carlots');
-
-            $url = 'get-zip.php?';
-            $origin = 'origin=' . $_GET['location'];
-            $distance = '&distance=' . $_GET['distance'];
-            $dest = '';
-
-            for($i = 0; $i < length($result); $i++){
-              $dest .= '&dest'. $i . '=' . $result[$i];
-            }
-            $verifiedZips = file_get_contents($url.$distance.$origin.$dest);
-
-
-          }
+          $filterList = array();
 
           $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price,
                    DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
@@ -108,18 +92,13 @@ try {
                         INNER JOIN carlots AS cl ON
                         c.carlot_id=cl.carlot_id';
 
+
           $list = $cc->queryGetAssoc($SQLString);
           echo json_encode($list);
       //if WHERE clause is requested, get all filter terms
       } elseif ($_GET['where'] === "true") {
           $cc = new DBController($DBConnect);
           $filterList = array();
-
-          /*
-          $SQLString = "SELECT carlot_id,carlot_posted_price,
-                    carlot_price_last_updated,make,model,trim,
-                    year,engine,transmission FROM cars";
-          */
 
           $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price,
                    DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
@@ -141,8 +120,24 @@ try {
               $filter = " year=" . $_GET['year'] . " ";
               array_push($filterList, $filter);
           }
+          if (isset($_GET['zip']) && $_GET['zip'] !== null) {
+              $arr = explode(",", $_GET['zip']);
+              $filter = "";
 
-          //
+              if (count($arr) > 1) {
+                  for ($i = 0; $i < count($arr); $i++) {
+                      $filter .= " cl.zip=" . $arr[$i];
+
+                      if (($i + 2) <= count($arr)) {
+                          $filter .= " OR";
+                      }
+                  }
+              } else {
+                  $filter = " zip=" . $arr[0];
+              }
+
+              array_push($filterList, $filter);
+          }
 
           //Add WHERE clause to SQL query, if filter terms retrieved
           if (count($filterList) > 0) {
@@ -157,11 +152,53 @@ try {
                   $SQLString .= "AND";
               }
           }
-
-
           $list = $cc->queryGetAssoc($SQLString);
 
           echo json_encode($list);
       }
   }
-?>
+
+  //Get Zip list and pass ibase_backup
+  if (isset($_GET['zipsearch'])) {
+      $cc = new DBController($DBConnect);
+
+      $filterList = array();
+
+      $SQLString = 'SELECT distinct cl.zip
+                  FROM cars AS c
+                  INNER JOIN carlots AS cl ON
+                  c.carlot_id=cl.carlot_id';
+
+      if (isset($_GET['make']) && $_GET['make'] !== null) {
+          $filter = " make=" . $_GET['make'] . " ";
+          array_push($filterList, $filter);
+      }
+      if (isset($_GET['model']) && $_GET['model'] !== null) {
+          $filter = " model=" . $_GET['model'] . " ";
+          array_push($filterList, $filter);
+      }
+      if (isset($_GET['year']) && $_GET['year'] !== null) {
+          $filter = " year=" . $_GET['year'] . " ";
+          array_push($filterList, $filter);
+      }
+
+      //
+
+      //Add WHERE clause to SQL query, if filter terms retrieved
+      if (count($filterList) > 0) {
+          $SQLString .= " WHERE";
+      }
+
+      //If filter terms exists, append to SQL Query
+      for ($i = 0; $i < count($filterList); ++$i) {
+          $SQLString .= $filterList[$i];
+
+          if (($i+2) <= count($filterList)) {
+              $SQLString .= "AND";
+          }
+      }
+
+
+      $list = $cc->queryGetArray($SQLString);
+      echo json_encode($list);
+  }
