@@ -1,8 +1,39 @@
 $(document).ready(function() {
+  /*------------------------- CARSEARCH.JS ------------------------------------
+
+  By: Christopher Torres
+  Version: 1.0
+  Date: 3/18/2019
+  Libraries used: JQuery, Javascript
+
+  Purpose:
+  This file handles all javascript operations for the car search page.
+
+  Section Index:
+  -VARIABLES: Hold global variables
+  -HELPER FUNCTIONS: Implementations of helper functions used in file
+  -ON PAGE LOADERS: Functions that run when the page is loaded
+  -ON CHANGE LISTENERS: Functions that run when an element changes
+  -ON CLICK LISTENERS: Functions that run when a element is clicked
+
+   ---------------------------------------------------------------------------*/
+
+
+
+
+
+
   /*****************************************************************************
                               VARIABLES
   *****************************************************************************/
-  //Search list generated on page load for drop down menus (3D Array)
+  /*
+    Search list generated on page load for drop down menus
+
+    Structure: {
+                  'make':{ 'model':['1992','1993'], 'model':['2000','2001']  },
+                  'make':{ 'model':['1992','1993'], 'model':['2000','2001']  }
+                }
+  */
   var searchListJson = {};
 
   /*****************************************************************************
@@ -36,7 +67,7 @@ $(document).ready(function() {
       this.attr('disabled', 'disabled');
     }
 
-  };
+  }
 
   /*
   Made by: Chris
@@ -44,26 +75,175 @@ $(document).ready(function() {
   Version: 1.0
 
   Helper function to convert a JSON object to a custom JS Object
-  for the dropdown menu search terms
+  for the dropdown menu search terms.
+
+  Pre-format: 3 column mySql table
+  =======================
+  | make | model | year |
+  -----------------------
+  | Data | Data | Data |
+  | Data | Data | Data |
+  | Data | Data | Data |
+  ======================
+
+   Post-Format: 3D JSON Object
+   {
+      'make':{'model':['2000',2001],'model':['year','year']} ,
+      'Toyota':{'Corolla':['2000',2001],'model':['year','year']}
+   }
+
   */
   $.createSearchList = function(data) {
     for (var i = 0; i < data.length; ++i) {
-      //Check 'make' array terms
+      //'make' index operation
       if (!searchListJson[data[i][0]]) {
         searchListJson[data[i][0]] = {};
       }
 
-      //Check 'model' array
+      //'model' index operation
       if (!searchListJson[data[i][0]][data[i][1]]) {
         searchListJson[data[i][0]][data[i][1]] = [];
       }
 
-      //Check 'year' arrays
+      //'year' index operation
       if (!(data[i][1] in searchListJson[data[i][0]][data[i][1]])) {
         searchListJson[data[i][0]][data[i][1]].push(data[i][2]);
       }
     }
-  };
+  }
+
+  /*
+  Made by: Chris
+  Date: 3/13/2019
+  Version: 1.0
+
+  Creates a GET request value string with the passed parameters
+
+  Output:
+  " make='Toyota'&model='Corolla'&year='2018'&zip=78109,78258  "
+  */
+
+  $.getRequestValues = function(make, model, year, location) {
+    console.log("GetValues recieved: \n" + make + "\n" + model + "\n" + year + "\n" + location);
+    if ((make == "null") && (model == "null") && (year == "null") && (location == null)) {
+      console.log("GetValues Returning: NULL");
+      return null;
+    } else {
+      //If where=true, the query will be filtered by the search terms
+      var searchTerms = [];
+      var values = "";
+
+      //make='Toyota'
+      if (make !== "null") {
+        searchTerms.push("make=\"" + make + "\"");
+      }
+      //model='Corolla'
+      if (model !== "null") {
+        searchTerms.push("model=\"" + model + "\"");
+      }
+      //year='2017'
+      if (year !== "null") {
+        searchTerms.push("year=\"" + year + "\"");
+      }
+      //zip=78258,78109
+      if (location !== null) {
+        //Add zips to car GET request string
+        var getString = "zip=";
+        for (var i = 0; i < location.length; ++i) {
+
+          getString += location[i];
+
+          if ((i + 1) != location.length)
+            getString += ",";
+        }
+
+        searchTerms.push(getString);
+      }
+
+      for (var i = 0; i < searchTerms.length; ++i) {
+        values += "&"
+        values += searchTerms[i];
+      }
+      console.log("GetValues Returning: " + values);
+      return values;
+    }
+  }
+
+  /*
+  Made by: Chris
+  Date: 3/18/2019
+  Version: 1.0
+
+  This function accepts a get-car.php/where call to get cars from the DB. If cars
+  are found, the data is inserted into card HTML elements and pushed to the
+  card deck. If no results are found, a message is displayed saying nothing was
+  found.
+
+  Returns: Nothing
+  */
+  $.setCardDeck = function(getString) {
+    $.get(getString, function(data, status) {
+      var jsonData = JSON.parse(data);
+      //check if any results returned
+
+      if (jsonData != null) {
+        //US Currency Formatter
+        const formatter = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 2
+        });
+
+        var deck = "";
+        for (var i = 0; i < jsonData.length; ++i) {
+          deck += "<div class=\"card mx-auto mb-3 border-secondary\"" +
+            "style=\"min-width:260px;max-width:260px\">" +
+            "<img src=\"../assets/placeholder_img_v2.png\" height=\"180\" width=\"260\" class=\"card-img-top\" alt=\"...\">" +
+            "<div class=\"card-body\">" +
+            "<h5 class=\"card-title\">" + jsonData[i].year + " " + jsonData[i].make + "<br>" + jsonData[i].model + " " + jsonData[i].trim + "</h5>" +
+            "<p class=\"card-title\"><u>" + jsonData[i].name + "</u><br>" + jsonData[i].street + "<br>" + jsonData[i].city + " " + jsonData[i].zip + "</p>" +
+            "<hr>" +
+            "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(jsonData[i].price) + "</h5>" +
+            "<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
+            "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + jsonData[i].date + "</small></p>" +
+            "<input type=\"hidden\" id=\"car_id\" name=\"car_id\" value=" + jsonData[i].car_id + ">" +
+            "</div>" +
+            "</div>";
+        }
+
+        $("#card_deck").html(deck);
+      } else {
+        var noResult = "<div class=\"card px-1\"><h3>No results found...</h3></div>"
+
+        $("#card_deck").html(noResult);
+      }
+
+    });
+  }
+
+  /*
+  Made by: Chris
+  Date: 3/18/2019
+  Version: 1.0
+
+  This function flattens a JSON object to a 1d array.
+
+  WARNING: The elements of the array are casted into strings for use in
+            the Google distance matrix API.
+
+  Example Input: [['78109'],['78258'],['78249']]
+  Example output: ["78109","78258","78249"]
+
+  */
+  $.flattenArray = function(OldArr) {
+    var newArr = [];
+
+    for (var i = 0; i < OldArr.length; ++i) {
+      newArr.push(String(OldArr[i]));
+    }
+
+    return newArr;
+  }
 
   /*
   Made by: Chris
@@ -72,8 +252,8 @@ $(document).ready(function() {
 
   Helper function to create a null <option> element
   */
-  $.newNullDropdownItem = function(value){
-    return "<option value=\"null\" class=\"dropdown-header text-dark\">"+value+"</option>";
+  $.newNullDropdownItem = function(value) {
+    return "<option value=null class=\"dropdown-header text-dark\">" + value + "</option>";
   }
 
   /*
@@ -84,8 +264,8 @@ $(document).ready(function() {
   Helper function to create a new <option> element. The parameter is used
   as the value and text
   */
-  $.newDropdownItem = function(value){
-    return "<option value=\""+value+"\" class=\"dropdown-header text-dark\">"+value+"</option>";
+  $.newDropdownItem = function(value) {
+    return "<option value=\"" + value + "\" class=\"dropdown-header text-dark\">" + value + "</option>";
   }
 
   /*****************************************************************************
@@ -116,20 +296,17 @@ $(document).ready(function() {
     //add returned data to option list
     for (index = 0; index < makeList.length; ++index) {
       list += $.newDropdownItem(makeList[index]);
-      console.log();
     }
     //Assign list to #make_dropdown
     $('#make_dropdown').html(list);
 
     //Null #model_dropdown and #year_dropdown
-    var nullOption = "<option value=\"null\">-</option>";
+    var nullOption = $.newNullDropdownItem("-");
     $('#model_dropdown').html(nullOption);
     $('#year_dropdown').html(nullOption);
 
     //Activate submit button after list is loaded
     $('#submitsearch').changeState(true);
-
-    console.log(JSON.stringify(makeList));
   });
 
   /*****************************************************************************
@@ -149,21 +326,21 @@ $(document).ready(function() {
       var makeList = Object.keys(searchListJson[makeVal]);
 
       //Set loading status to model make_dropdown
-      var loadingStatus = "<option value=\"null\">Loading...</option>";
+      var loadingStatus = $.newNullDropdownItem("Loading...");
       $('#model_dropdown').html(loadingStatus);
       $('#year_dropdown').html(loadingStatus);
 
       //build option list for <select> element
-      var list = "<option value=\"null\">Make...</option>";
+      var list = $.newNullDropdownItem("Make...");
       //add data returned from query
       for (index = 0; index < makeList.length; ++index) {
-        list += "<option value=\"" + makeList[index] + "\">" + makeList[index] + "</option>";
+        list += $.newDropdownItem(makeList[index]);
       }
       //assign option list to dropdown
       $('#model_dropdown').html(list);
 
       //clear year_dropdown
-      var nullOption = "<option value=\"null\">-</option>";
+      var nullOption = $.newNullDropdownItem("-");
       $('#year_dropdown').html(nullOption);
 
 
@@ -172,7 +349,7 @@ $(document).ready(function() {
 
     } else {
       //Null #model_dropdown and #year_dropdown
-      var nullOption = "<option value=\"null\">-</option>";
+      var nullOption = $.newNullDropdownItem("-");
       $('#model_dropdown').html(nullOption);
       $('#year_dropdown').html(nullOption);
 
@@ -202,15 +379,15 @@ $(document).ready(function() {
       var yearList = searchListJson[makeVal][modelVal];
 
       //Set loading status to model make_dropdown
-      var loadingStatus = "<option value=\"null\">Loading...</option>";
+      var loadingStatus = $.newNullDropdownItem("Loading...");
       $('#year_dropdown').html(loadingStatus);
 
 
       //build option list for <select> element
-      var list = "<option value=\"null\">Year...</option>";
+      var list = $.newNullDropdownItem("Year...");
       //add data returned from query
       for (index = 0; index < yearList.length; ++index) {
-        list += "<option value=\"" + yearList[index] + "\">" + yearList[index] + "</option>";
+        list += $.newDropdownItem(yearList[index])
       }
 
       //assign option list to dropdown
@@ -221,7 +398,7 @@ $(document).ready(function() {
 
     } else {
       //Null #model_dropdown and #year_dropdown
-      var nullOption = "<option value=\"null\">-</option>";
+      var nullOption = $.newNullDropdownItem("-");
       $('#year_dropdown').html(nullOption);
 
       //Activate button
@@ -230,15 +407,17 @@ $(document).ready(function() {
   });
 
   /*****************************************************************************
-                                      ON CLICK LISTENER
+                            ON CLICK LISTENER
   *****************************************************************************/
 
 
-  //Submit button click listener
+  //Variables for performance testing
   var times = 0.0;
   var totalTime = 0.0;
+
   //Submit button listener
   $('#submitsearch').click(function() {
+    console.log("Submit button pressed");
     var t0 = performance.now();
 
     //Disable button
@@ -253,100 +432,195 @@ $(document).ready(function() {
     var model = $("#model_dropdown").val();
     var year = $("#year_dropdown").val();
     var zip = String($("#zip_textbox").val());
+    var distance = $('#distance_dropdown').val();
+    //Regular expression literal to test the format of the input
     var zipRegex = /^(\d{5})$/;
 
-    /*
-      WORK IN PROGRESS -(Chris)
-      TODO:
-      -Implement regex check (done)
-      -Check input to list of Texas postal codes
+    /*******
+      If distance and location are set, location filter will be calculated,
+      otherwise all location calulations will be skipped
+    ******/
+    if (zipRegex.test(zip) && distance !== 'null') { //Executed if Location
+      // is detected
+      console.log("Location detected");
 
-    console.log("\"" + zip + "\" " + zipRegex.test(zip));
-    if(zipRegex.test(zip)){
-      var dest = '78258';
-      var service = new google.maps.DistanceMatrixService();
-      service.getDistanceMatrix({
-        origins: [zip],
-        destinations: [dest],
-        travelMode: 'DRIVING',
-        unitSystem: google.maps.UnitSystem.IMPERIAL,
-      }, function(data, status) {
-          alert("Status: " + status + " Data: " + JSON.stringify(data));
+      //location array initiation. Used to hold results of location calulations
+      var location = null;
+
+      /*
+        Get request filter values for zip code query
+        -See $.getRequestValues() implementation in helper function section
+         for details of how to use function.
+      */
+      var requestString = $.getRequestValues(make, model, year, null);
+
+      //API URL used to get list of distinct zip codes
+      var getZipString = "/choosencruise/PHP/API/get-car.php?zipsearch";
+      //if request filter values were returned, append to end of URL
+      if (requestString != null) {
+        getZipString += requestString;
+      }
+
+      /*****
+        GET request is used to get the list of zip codes associated with
+        the cars requested. The JSON data is immediately flattened to a 1d
+        array for easy insertion to the Google Service Distance matrix
+        request. See $.flattenArray() implementation in helper function
+        section for details
+
+        returns data: a single column table with distinct zip codes.
+
+      *****/
+      $.get(getZipString, function(data, status) {
+        if (status == 'success') {
+
+          var jsonData = $.parseJSON(data);
+          var list = $.flattenArray(jsonData);
+          var zipsInArea = [];
+
+          console.table(list);
+
+          /*
+          Google Distance matrix response format
+          {
+           "rows":[
+             {"elements":[
+                 {"distance":{"text":"21.1 mi","value":33962},"duration":{"text":"30 mins","value":1825},"status":"OK"},
+                  {"distance":{"text":"24.6 mi","value":39647},"duration":{"text":"35 mins","value":2082},"status":"OK"}
+                        }],
+                  "originAddresses":["Converse, TX 78109, USA"],
+             "destinationAddresses":["San Antonio, TX 78221, USA","San Antonio, TX 78258, USA","San Antonio, TX 78233, USA"]
+          }
+
+          *********************************************************************
+
+          The zip code data passed from the parent GET request is passed into
+          Google distance matrix API. If an OK status is passed, the results are
+          processed. If the car's zip codes are within the distance of the
+          origin, an array of the valid zipcodes are created, otherwise, the
+          array will contain a 0.
+
+          */
+
+          var service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix({
+            origins: [zip],
+            destinations: list,
+            travelMode: 'DRIVING',
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
+          }, function(data, status) {
+
+            if (status == "OK") {
+              zipsInArea = [];
+              var origins = data.originAddresses;
+
+              //Iterate thru each row, and compare the distance to the user
+              //input distance.
+              for (var i = 0; i < origins.length; i++) {
+                var results = data.rows[i].elements;
+                for (var j = 0; j < results.length; j++) {
+                  var element = results[j]
+                  var elementDistance = element.distance.text;
+
+                  //                                   index:      1   2
+                  // The distance value is a string with format: "26.1 mi". In
+                  // order to compare each row distance to the user-input
+                  // distance, the string is exploded with a whitespace and
+                  // the first index is parsed into a float
+                  var elementMiles = parseFloat(elementDistance.split(" ", 1));
+
+                  if (elementMiles <= distance) {
+                    zipsInArea.push(list[j]);
+                  }
+                }
+              }
+
+              //If no zip codes were aquired, push 0 into array
+              if (zipsInArea.length < 1) {
+                zipsInArea.push(0);
+              }
+
+              //Save results into location variable
+              location = zipsInArea;
+
+              /*
+                Use $.getRequestValues to create the GET request car search
+                filter values.
+
+                Return example:
+
+                make="Toyota"&model="Camry"&year="2017"&zip=78219,78249;
+              */
+              var requestValues = $.getRequestValues(make, model, year, location);
+
+              //If request value is null, no search terms were fetched
+              var getString = "/choosencruise/PHP/API/get-car.php?";
+              if (requestValues === null) {
+                getString += "where=false";
+              } else {
+                getString += "where=true" + requestValues;
+              }
+
+              // GET request to server for cars that will build car
+              // deck data.
+              $.setCardDeck(getString);
+
+
+              //Activate button
+              $('#submitsearch').changeState(true);
+
+              //performance testing
+              var t1 = performance.now();
+              totalTime += (t1 - t0);
+              times++;
+              console.log("Clicks: " + times + "\nAvg: " + (totalTime / times) + "ms");
+
+            } else {
+              console.error("Google Distance matrix has failed");
+            }
+          });
+
+        }
       });
-    }
-    */
 
 
-    /*
-      If all search terms (all dropdowns) are null, the search will default to
-      getting all the cars in the database. Otherwise a search will
-      be done with any of the provided search terms.
-    */
-    if (make === "null" && model === "null" && year === "null") {
-      //If where=false, all cars will be requested from DB
-      var getString = "/choosencruise/PHP/API/get-car.php?where=false";
     } else {
-      //If where=true, the query will be filtered by the search terms
-      var getString = "/choosencruise/PHP/API/get-car.php?where=true";
-      var searchTerms = [];
+      console.log("Location not detected");
 
-      if (make !== "null") {
-        searchTerms.push("make=\"" + make + "\"");
-      }
-      if (model !== "null") {
-        searchTerms.push("model=\"" + model + "\"");
-      }
-      if (year !== "null") {
-        searchTerms.push(term1 = "year=\"" + year + "\"");
-      }
+      /*
+        Use $.getRequestValues to create the GET request car search
+        filter values.
 
-      for (var i = 0; i < searchTerms.length; ++i) {
-        getString += "&"
-        getString += searchTerms[i];
-      }
-    }
+        Return example:
 
+        make="Toyota"&model="Camry"&year="2017"&zip=78219,78249;
+      */
 
-    // GET request to server for cars that will build car
-    // table data.
-    $.get(getString, function(data, status) {
-      var jsonData = JSON.parse(data);
+      var requestValues = $.getRequestValues(make, model, year, null);
 
-      //US Currency Formatter
-      const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2
-      });
-
-      var deck = "";
-      for (var i = 0; i < jsonData.length; ++i) {
-        deck += "<div class=\"card mx-auto mb-3 border-secondary\"" +
-          "style=\"min-width:260px;max-width:260px\">" +
-          "<img src=\"../assets/placeholder_img_v2.png\" height=\"180\" width=\"260\" class=\"card-img-top\" alt=\"...\">" +
-          "<div class=\"card-body\">" +
-          "<h5 class=\"card-title\">" + jsonData[i].year + " " + jsonData[i].make + "<br>" + jsonData[i].model + " " + jsonData[i].trim + "</h5>" +
-          "<p class=\"card-title\"><u>" + jsonData[i].name + "</u><br>" + jsonData[i].street + "<br>" + jsonData[i].city + " " + jsonData[i].zip + "</p>" +
-          "<hr>" +
-          "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(jsonData[i].price) + "</h5>" +
-          "<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
-          "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + jsonData[i].date + "</small></p>" +
-          "<input type=\"hidden\" id=\"car_id\" name=\"car_id\" value=" + jsonData[i].car_id + ">" +
-          "</div>" +
-          "</div>";
+      var getString = "/choosencruise/PHP/API/get-car.php?";
+      if (requestValues === null) {
+        getString += "where=false";
+      } else {
+        getString += "where=true" + requestValues;
       }
 
-      $("#card_deck").html(deck);
+
+      // GET request to server for cars that will build car
+      // table data.
+      $.setCardDeck(getString);
+
+
+      //Activate button
+      $('#submitsearch').changeState(true);
+
       var t1 = performance.now();
 
       totalTime += (t1 - t0);
       times++;
 
-      //Activate button
-      $('#submitsearch').changeState(true);
       console.log("Clicks: " + times + "\nAvg: " + (totalTime / times) + "ms");
-    });
-
+    }
   });
 
 });
