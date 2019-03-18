@@ -38,7 +38,11 @@
                   array_push($list, $Row);
               }
 
-              return $list;
+              if(count($list) < 1){
+                return null;
+              }else{
+                return $list;
+              }
           }
       }
 
@@ -60,7 +64,12 @@
                     array_push($list, $Row);
                 }
 
-                return $list;
+                if(count($list) < 1){
+                  return null;
+                }else{
+                  return $list;
+                }
+
             }
       }
   }
