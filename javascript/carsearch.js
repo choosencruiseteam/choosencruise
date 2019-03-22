@@ -196,9 +196,11 @@ $(document).ready(function() {
 
         var deck = "";
         for (var i = 0; i < jsonData.length; ++i) {
-          deck += "<div class=\"card mx-auto mb-3 border-secondary\"" +
+          deck += "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
             "style=\"min-width:260px;max-width:260px\">" +
+            "<a href=\"../html/details.html?car=" + jsonData[i].car_id + "\" >" +
             "<img src=\"../assets/placeholder_img_v2.png\" height=\"180\" width=\"260\" class=\"card-img-top\" alt=\"...\">" +
+            "</a>" +
             "<div class=\"card-body\">" +
             "<h5 class=\"card-title\">" + jsonData[i].year + " " + jsonData[i].make + "<br>" + jsonData[i].model + " " + jsonData[i].trim + "</h5>" +
             "<p class=\"card-title\"><u>" + jsonData[i].name + "</u><br>" + jsonData[i].street + "<br>" + jsonData[i].city + " " + jsonData[i].zip + "</p>" +
@@ -206,7 +208,6 @@ $(document).ready(function() {
             "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(jsonData[i].price) + "</h5>" +
             "<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
             "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + jsonData[i].date + "</small></p>" +
-            "<input type=\"hidden\" id=\"car_id\" name=\"car_id\" value=" + jsonData[i].car_id + ">" +
             "</div>" +
             "</div>";
         }
@@ -622,5 +623,4 @@ $(document).ready(function() {
       console.log("Clicks: " + times + "\nAvg: " + (totalTime / times) + "ms");
     }
   });
-
 });
