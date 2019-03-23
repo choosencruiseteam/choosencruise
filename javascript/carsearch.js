@@ -18,11 +18,6 @@ $(document).ready(function() {
 
    ---------------------------------------------------------------------------*/
 
-
-
-
-
-
   /*****************************************************************************
                               VARIABLES
   *****************************************************************************/
@@ -197,7 +192,7 @@ $(document).ready(function() {
         var deck = "";
         for (var i = 0; i < jsonData.length; ++i) {
           deck += "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
-            "style=\"min-width:260px;max-width:260px\">" +
+            "style=\"min-width:260px;max-width:260px;min-height:475px;\">" +
             "<a href=\"../html/details.html?car=" + jsonData[i].car_id + "\" >" +
             "<img src=\"../assets/placeholder_img_v2.png\" height=\"180\" width=\"260\" class=\"card-img-top\" alt=\"...\">" +
             "</a>" +
@@ -416,7 +411,16 @@ $(document).ready(function() {
   var times = 0.0;
   var totalTime = 0.0;
 
-  //Submit button listener
+  /*
+    -Submit button listener
+    By: Christopher
+    Updated: 3/22/2019
+
+    This on click listner waits for the submit button to the activated. When
+    clicked, cars from the database will be requested and inserted into the
+    results table.
+
+  */
   $('#submitsearch').click(function() {
     console.log("Submit button pressed");
     var t0 = performance.now();
