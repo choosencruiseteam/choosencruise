@@ -44,6 +44,8 @@ try {
 
   /*****************************************************************************
       Get search terms for dropdown menu
+
+      KEYWORD =  'search'
   *****************************************************************************/
   if (isset($_GET['search'])) {
       if ($_GET['search'] === "true") {
@@ -77,6 +79,8 @@ try {
 
 /*******************************************************************************
       Get car record from DB with WHERE clause as an option
+
+      KEYWORD = 'where'
 *******************************************************************************/
   if (isset($_GET['where'])) {
       //if WHERE clause is not requested, get all cars
@@ -158,7 +162,12 @@ try {
       }
   }
 
-  //Get Zip list and pass ibase_backup
+
+  /*
+    Get Zip list of carlots from DB
+
+    KEYWORD = 'zipsearch'
+  */
   if (isset($_GET['zipsearch'])) {
       $cc = new DBController($DBConnect);
 
@@ -201,4 +210,41 @@ try {
 
       $list = $cc->queryGetArray($SQLString);
       echo json_encode($list);
+  }
+
+  /*
+    Get detailed information about a car and it's carlot from DB
+
+    KEYWORD = 'detail'
+
+  */
+
+  if(isset($_GET['detail'])){
+
+    $queryVal = $_GET['detail'];
+
+    //check if value is number, else short circuit
+    if(is_numeric($queryVal)){
+      //check if value is within valid range: val > 0 and val < 999999
+      if($queryVal > 0 && $queryVal <= 999999){
+        $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price,
+                 DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
+                             c.make,c.model,c.trim,c.year, c.engine, c.transmission,c.mileage,
+                             cl.carlot_id,cl.name AS carlot_name,cl.street,
+                             cl.state,cl.city,cl.zip,cl.phone
+                      FROM cars AS c
+                      INNER JOIN carlots AS cl ON
+                      c.carlot_id=cl.carlot_id WHERE car_id='.$queryVal;
+
+        $cc = new DBController($DBConnect);
+        $result = $cc->queryGetAssoc($SQLString);
+        echo json_encode($result);
+
+      }else{
+        echo json_encode(null);
+      }
+
+    }else{
+      echo json_encode(null);
+    }
   }
