@@ -1,0 +1,13 @@
+{
+  "name": "Choose-N-Cruise",
+  "short_name": "C-N-C",
+  "description": "A better way to shop.",
+  "start_url": "/index.html",
+  "background_color": "#f8f9fa",
+  "theme_color": "#007bff",
+  "icons": [{
+    "src": "icon-150.png",
+    "sizes": "512x313",
+    "type": "image/png"
+  }]
+}

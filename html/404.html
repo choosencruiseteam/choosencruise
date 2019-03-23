@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Search For a Car</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#007bff">
+  <link rel=icon href="../assets/favicon.ico">
+
+  <!-- Bootstrap CSS (Internet req)
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  -->
+  <link rel="stylesheet" type="text/css" href="../library/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+</head>
+
+<body style="background-color:#dce3df!important">
+
+  <!-- **Header div**  Loaded using: ../Javascript/carsearch.js  -->
+  <div class="header" id="header"></div>
+
+  <div class="main">
+    <div class="col">
+      <img src="../assets/404.jpg" class="mx-auto d-block" alt="Business vector created by freepik - www.freepik.com" style="width:500px;height:auto;">
+      <div class="text-center">
+        <a href="https://www.freepik.com/free-photos-vectors/business">Business vector created by freepik - www.freepik.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- **Footer div**
+    Loaded using:  ../Javascript/carsearch.js
+  -->
+  <div class="footer" id="footer"></div>
+
+  <script src="../library/jquery-3.3.1.min.js"></script>
+  <script src="../library/bootstrap-4.3.1-dist/popper.min.js"></script>
+  <script src="../library/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+  <script>
+    //Script to handle 404.html operations
+    $(document).ready(function() {
+      //Load head and footer layouts
+      $('#header').load('../html/header.html');
+      $('#footer').load('../html/footer.html');
+    });
+  </script>
+
+</body>
+
+</html>

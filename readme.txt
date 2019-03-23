@@ -2,8 +2,8 @@
 ~~~~~~~~~~~~~~~~~~~~~~Team ChooseNCruise~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By: Chris Torres
-Version: 1
-Date Updated: 3/5/2019
+Version: 1.1
+Date Updated: 3/18/2019
 
 
 ************************** Project Description **************************
@@ -25,7 +25,9 @@ folder hierarchy.
 ---------------
 .git - (GITHUB management folder, DO NOT MODIFY THIS)
 
-library - (Hold referenced libraries, example: JQuery)
+assets - Used to hold images for webpage
+
+library - (Hold referenced libraries, example: JQuery,Bootstrap)
 
 css - (Hold all CSS style sheets)
 
