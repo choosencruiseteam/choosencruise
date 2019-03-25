@@ -91,10 +91,10 @@ try {
           $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price,
                    DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
                                c.make,c.model,c.trim,c.year, cl.name,cl.street,
-                               cl.state,cl.city,cl.zip
+                               cl.state,cl.city,cl.zip, i.main_img_hash AS img
                         FROM cars AS c
-                        INNER JOIN carlots AS cl ON
-                        c.carlot_id=cl.carlot_id';
+                        INNER JOIN carlots AS cl ON c.carlot_id=cl.carlot_id
+                        LEFT JOIN imgur_bank AS i ON i.car_id = c.car_id';
 
 
           $list = $cc->queryGetAssoc($SQLString);
@@ -107,10 +107,10 @@ try {
           $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price,
                    DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
                                c.make,c.model,c.trim,c.year, cl.name,cl.street,
-                               cl.state,cl.city,cl.zip
+                               cl.state,cl.city,cl.zip, i.main_img_hash AS img
                         FROM cars AS c
-                        INNER JOIN carlots AS cl ON
-                        c.carlot_id=cl.carlot_id';
+                        INNER JOIN carlots AS cl ON c.carlot_id=cl.carlot_id
+                        LEFT JOIN imgur_bank AS i ON i.car_id = c.car_id';
 
           if (isset($_GET['make']) && $_GET['make'] !== null) {
               $filter = " make=" . $_GET['make'] . " ";
@@ -227,14 +227,15 @@ try {
     if(is_numeric($queryVal)){
       //check if value is within valid range: val > 0 and val < 999999
       if($queryVal > 0 && $queryVal <= 999999){
-        $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price,
-                 DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
-                             c.make,c.model,c.trim,c.year, c.engine, c.transmission,c.mileage,
-                             cl.carlot_id,cl.name AS carlot_name,cl.street,
-                             cl.state,cl.city,cl.zip,cl.phone
-                      FROM cars AS c
-                      INNER JOIN carlots AS cl ON
-                      c.carlot_id=cl.carlot_id WHERE car_id='.$queryVal;
+        $SQLString = 'SELECT c.car_id, c.carlot_posted_price AS price, c.engine,
+                             c.transmission, c.mileage,
+                   DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
+                               c.make,c.model,c.trim,c.year, cl.name,cl.street,
+                               cl.state,cl.city,cl.zip,cl.phone,i.album_hash AS album
+                        FROM cars AS c
+                        INNER JOIN carlots AS cl ON c.carlot_id = cl.carlot_id
+                        LEFT JOIN imgur_bank AS i ON i.car_id = c.car_id
+                        WHERE c.car_id='.$queryVal;
 
         $cc = new DBController($DBConnect);
         $result = $cc->queryGetAssoc($SQLString);
