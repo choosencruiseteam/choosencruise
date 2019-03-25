@@ -177,9 +177,10 @@ $(document).ready(function() {
   Returns: Nothing
   */
   $.setCardDeck = function(getString) {
+
     $.get(getString, function(data, status) {
+
       var jsonData = JSON.parse(data);
-      //check if any results returned
 
       if (jsonData != null) {
         //US Currency Formatter
@@ -189,28 +190,68 @@ $(document).ready(function() {
           minimumFractionDigits: 2
         });
 
-        var deck = "";
+        //Clear table before appending cards
+        $("#card_deck").html("");
+
+        var card = "";
         for (var i = 0; i < jsonData.length; ++i) {
-          deck += "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
-            "style=\"min-width:260px;max-width:260px;min-height:475px;\">" +
-            "<a href=\"../html/details.html?car=" + jsonData[i].car_id + "\" >" +
-            "<img src=\"../assets/placeholder_img_v2.png\" height=\"180\" width=\"260\" class=\"card-img-top\" alt=\"...\">" +
-            "</a>" +
-            "<div class=\"card-body\">" +
-            "<h5 class=\"card-title\">" + jsonData[i].year + " " + jsonData[i].make + "<br>" + jsonData[i].model + " " + jsonData[i].trim + "</h5>" +
-            "<p class=\"card-title\"><u>" + jsonData[i].name + "</u><br>" + jsonData[i].street + "<br>" + jsonData[i].city + " " + jsonData[i].zip + "</p>" +
-            "<hr>" +
-            "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(jsonData[i].price) + "</h5>" +
-            "<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
-            "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + jsonData[i].date + "</small></p>" +
-            "</div>" +
-            "</div>";
+          var hash = jsonData[i].img;
+
+          if (hash != null) {
+            var settings = {
+              "url": "https://api.imgur.com/3/image/" + hash,
+              "method": "GET",
+              "timeout": 0,
+              "jsonData": jsonData[i],
+              "headers": {
+                "Authorization": "Client-ID 24e7752611ea41f"
+              },
+            };
+
+            $.ajax(settings).done(function(response) {
+              console.log(response.data.link);
+              var imgURL = response.data.link;
+
+              card = "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
+                "style=\"min-width:300px;max-width:300px;min-height:475px;\">" +
+                "<a href=\"../html/details.html?car=" + this.jsonData.car_id + "\" style=\"height:200px;\">" +
+                "<img src=\""+imgURL+"\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
+                "</a>" +
+                "<div class=\"card-body\"><hr>" +
+                "<h5 class=\"card-title\">" + this.jsonData.year + " " + this.jsonData.make + "<br>" + this.jsonData.model + " " + this.jsonData.trim + "</h5>" +
+                "<p class=\"card-title\"><u>" + this.jsonData.name + "</u><br>" + this.jsonData.street + "<br>" + this.jsonData.city + " " + this.jsonData.zip + "</p>" +
+                "<hr>" +
+                "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(this.jsonData.price) + "</h5>" +
+                //"<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
+                "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + this.jsonData.date + "</small></p>" +
+                "</div>" +
+                "</div>";
+
+              $("#card_deck").append(card);
+            });
+          } else {
+            card = "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
+              "style=\"min-width:300px;max-width:300px;min-height:475px;\">" +
+              "<a href=\"../html/details.html?car=" + jsonData[i].car_id + "\" style=\"height:200px;\">" +
+              "<img src=\"../assets/placeholder_img_v2.png\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
+              "</a>" +
+              "<div class=\"card-body\"><hr>" +
+              "<h5 class=\"card-title\">" + jsonData[i].year + " " + jsonData[i].make + "<br>" + jsonData[i].model + " " + jsonData[i].trim + "</h5>" +
+              "<p class=\"card-title\"><u>" + jsonData[i].name + "</u><br>" + jsonData[i].street + "<br>" + jsonData[i].city + " " + jsonData[i].zip + "</p>" +
+              "<hr>" +
+              "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(jsonData[i].price) + "</h5>" +
+              //"<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
+              "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + jsonData[i].date + "</small></p>" +
+              "</div>" +
+              "</div>";
+
+            $("#card_deck").append(card);
+          }
+
         }
 
-        $("#card_deck").html(deck);
       } else {
         var noResult = "<div class=\"card px-1\"><h3>No results found...</h3></div>"
-
         $("#card_deck").html(noResult);
       }
 
