@@ -8,7 +8,7 @@
       <!-- Grid column -->
       <div class="col-md-6 mt-md-0 mt-3 text-white">
         <!-- Content -->
-        <div class="container" >
+        <div class="container">
           <img class="center-block" src="../assets/logo-150.png" style="width:150px;height:auto">
           <p>A <b>better</b> way to shop.</p>
         </div>
@@ -20,11 +20,11 @@
       <div class="col-md-3 mb-md-0 mb-3">
 
         <!-- Links -->
-        <h5 class="text-uppercase text-white">Links</h5>
+        <h5 class="text-uppercase text-white">About Us</h5>
 
         <ul class="list-unstyled">
           <li>
-            <a href="#!">Link 1</a>
+            <a href="javascript:void(0);" onclick="PopupCenter()">Terms and Conditions</a>
           </li>
           <li>
             <a href="#!">Link 2</a>
@@ -36,6 +36,30 @@
             <a href="#!">Link 4</a>
           </li>
         </ul>
+
+        <script>
+
+          function PopupCenter() {
+            var url = "./terms.html";
+            var title = "Terms and Conditions";
+            var w = 500;
+            var h = 500;
+            // Fixes dual-screen position                         Most browsers      Firefox
+            var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
+            var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
+
+            var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+            var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+            var systemZoom = width / window.screen.availWidth;
+            var left = (width - w) / 2 / systemZoom + dualScreenLeft
+            var top = (height - h) / 2 / systemZoom + dualScreenTop
+            var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w / systemZoom + ', height=' + h / systemZoom + ', top=' + top + ', left=' + left);
+
+            // Puts focus on the newWindow
+            if (window.focus) newWindow.focus();
+          }
+        </script>
 
       </div>
       <!-- Grid column -->
@@ -52,8 +76,7 @@
               </li>
               <li>
                 <a href="#!">Link 2</a>
-              </li>
-              <li>
+</li>              <li>
                 <a href="#!">Link 3</a>
               </li>
               <li>
