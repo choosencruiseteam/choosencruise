@@ -24,10 +24,10 @@
 
         <ul class="list-unstyled">
           <li>
-            <a href="javascript:void(0);" onclick="PopupCenter()">Terms and Conditions</a>
+            <a id="terms_link" href="javascript:void(0);">Terms and Conditions</a>
           </li>
           <li>
-            <a href="#!">Link 2</a>
+            <a id="privacy_link" href="javascript:void(0);">Privacy Policy</a>
           </li>
           <li>
             <a href="#!">Link 3</a>
@@ -38,10 +38,7 @@
         </ul>
 
         <script>
-
-          function PopupCenter() {
-            var url = "./terms.html";
-            var title = "Terms and Conditions";
+          function popupWindow(url, title) {
             var w = 500;
             var h = 500;
             // Fixes dual-screen position                         Most browsers      Firefox
@@ -59,6 +56,16 @@
             // Puts focus on the newWindow
             if (window.focus) newWindow.focus();
           }
+
+          $(document).ready(function() {
+            $('#terms_link').click(function() {
+              popupWindow("./terms.html", "Terms and Conditions");
+            });
+
+            $('#privacy_link').click(function() {
+              popupWindow("./privacypolicy.html", "Privacy Policy");
+            });
+          });
         </script>
 
       </div>
