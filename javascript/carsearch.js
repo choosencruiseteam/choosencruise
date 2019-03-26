@@ -169,8 +169,8 @@ $(document).ready(function() {
   Date: 3/18/2019
   Version: 1.0
 
-  This function accepts a get-car.php/where call to get cars from the DB. If cars
-  are found, the data is inserted into card HTML elements and pushed to the
+  This function accepts a get-car.php/where?params call to get cars from the DB.
+  If cars are found, the data is inserted into card HTML elements and pushed to the
   card deck. If no results are found, a message is displayed saying nothing was
   found.
 
@@ -318,6 +318,7 @@ $(document).ready(function() {
   */
   //Turn off button while list is Loaded
   $('#submitsearch').changeState(false);
+
   $.get("/choosencruise/PHP/API/get-car.php?search=false", function(data, status) {
     //Parse incoming data into manipulatable array
     var jsonData = JSON.parse(data);
@@ -349,7 +350,12 @@ $(document).ready(function() {
   /*****************************************************************************
                                   ON CHANGE LISTENERS
   *****************************************************************************/
-  //#make_dropdown onChange() listener
+  /*
+    #make_dropdown onChange() listener
+
+    This event listener waits for a change in the make_dropdown menu, then
+    waterfalls the correct search terms to the dropdowns below it.
+  */
   $('#make_dropdown').change(function() {
 
     //disable submit button
@@ -359,7 +365,8 @@ $(document).ready(function() {
     var makeVal = $("#make_dropdown").val();
 
     if (makeVal != "null") {
-      //Goto 'model' index on searchListJson
+      // Goto 'model' index on searchListJson - see searchListJson format
+      // in VARIABLES (top of the page) section
       var makeList = Object.keys(searchListJson[makeVal]);
 
       //Set loading status to model make_dropdown
@@ -369,6 +376,7 @@ $(document).ready(function() {
 
       //build option list for <select> element
       var list = $.newNullDropdownItem("Make...");
+
       //add data returned from query
       for (index = 0; index < makeList.length; ++index) {
         list += $.newDropdownItem(makeList[index]);
@@ -393,9 +401,6 @@ $(document).ready(function() {
       //Activate button
       $('#submitsearch').changeState(true);
     }
-
-
-
   });
 
   /**************************************
@@ -457,9 +462,21 @@ $(document).ready(function() {
     By: Christopher
     Updated: 3/22/2019
 
-    This on click listner waits for the submit button to the activated. When
+    This on click listner waits for the submit button to be activated. When
     clicked, cars from the database will be requested and inserted into the
     results table.
+
+    if(location is requested){
+      -Get list of zip codes (zip codes only) from DB filtered by dropdown menu
+          search terms
+      -Request distance of origin VS destinations from Google Distance Matrix
+        API
+      -Determine which zipcodes are within the distance of the origin
+      -GET request to DB for cars using search terms and valid zipcodes within
+        distance of origin
+    }else{
+      -GET request to DB for cars using search terms
+     }
 
   */
   $('#submitsearch').click(function() {
@@ -511,7 +528,7 @@ $(document).ready(function() {
         GET request is used to get the list of zip codes associated with
         the cars requested. The JSON data is immediately flattened to a 1d
         array for easy insertion to the Google Service Distance matrix
-        request. See $.flattenArray() implementation in helper function
+        request. See $.flattenArray() implementation in HELPER FUNCTION
         section for details
 
         returns data: a single column table with distinct zip codes.
@@ -568,7 +585,7 @@ $(document).ready(function() {
                   var element = results[j]
                   var elementDistance = element.distance.text;
 
-                  //                                   index:      1   2
+                  //                                    index:      1   2
                   // The distance value is a string with format: "26.1 mi". In
                   // order to compare each row distance to the user-input
                   // distance, the string is exploded with a whitespace and
