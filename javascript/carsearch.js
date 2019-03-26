@@ -169,17 +169,18 @@ $(document).ready(function() {
   Date: 3/18/2019
   Version: 1.0
 
-  This function accepts a get-car.php/where call to get cars from the DB. If cars
-  are found, the data is inserted into card HTML elements and pushed to the
+  This function accepts a get-car.php/where?params call to get cars from the DB.
+  If cars are found, the data is inserted into card HTML elements and pushed to the
   card deck. If no results are found, a message is displayed saying nothing was
   found.
 
   Returns: Nothing
   */
   $.setCardDeck = function(getString) {
+
     $.get(getString, function(data, status) {
+
       var jsonData = JSON.parse(data);
-      //check if any results returned
 
       if (jsonData != null) {
         //US Currency Formatter
@@ -189,28 +190,68 @@ $(document).ready(function() {
           minimumFractionDigits: 2
         });
 
-        var deck = "";
+        //Clear table before appending cards
+        $("#card_deck").html("");
+
+        var card = "";
         for (var i = 0; i < jsonData.length; ++i) {
-          deck += "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
-            "style=\"min-width:260px;max-width:260px;min-height:475px;\">" +
-            "<a href=\"../html/details.html?car=" + jsonData[i].car_id + "\" >" +
-            "<img src=\"../assets/placeholder_img_v2.png\" height=\"180\" width=\"260\" class=\"card-img-top\" alt=\"...\">" +
-            "</a>" +
-            "<div class=\"card-body\">" +
-            "<h5 class=\"card-title\">" + jsonData[i].year + " " + jsonData[i].make + "<br>" + jsonData[i].model + " " + jsonData[i].trim + "</h5>" +
-            "<p class=\"card-title\"><u>" + jsonData[i].name + "</u><br>" + jsonData[i].street + "<br>" + jsonData[i].city + " " + jsonData[i].zip + "</p>" +
-            "<hr>" +
-            "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(jsonData[i].price) + "</h5>" +
-            "<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
-            "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + jsonData[i].date + "</small></p>" +
-            "</div>" +
-            "</div>";
+          var hash = jsonData[i].img;
+
+          if (hash != null) {
+            var settings = {
+              "url": "https://api.imgur.com/3/image/" + hash,
+              "method": "GET",
+              "timeout": 0,
+              "jsonData": jsonData[i],
+              "headers": {
+                "Authorization": "Client-ID 24e7752611ea41f"
+              },
+            };
+
+            $.ajax(settings).done(function(response) {
+              console.log(response.data.link);
+              var imgURL = response.data.link;
+
+              card = "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
+                "style=\"min-width:300px;max-width:300px;min-height:475px;\">" +
+                "<a href=\"../html/details.html?car=" + this.jsonData.car_id + "\" style=\"height:200px;\">" +
+                "<img src=\""+imgURL+"\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
+                "</a>" +
+                "<div class=\"card-body\"><hr>" +
+                "<h5 class=\"card-title\">" + this.jsonData.year + " " + this.jsonData.make + "<br>" + this.jsonData.model + " " + this.jsonData.trim + "</h5>" +
+                "<p class=\"card-title\"><u>" + this.jsonData.name + "</u><br>" + this.jsonData.street + "<br>" + this.jsonData.city + " " + this.jsonData.zip + "</p>" +
+                "<hr>" +
+                "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(this.jsonData.price) + "</h5>" +
+                //"<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
+                "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + this.jsonData.date + "</small></p>" +
+                "</div>" +
+                "</div>";
+
+              $("#card_deck").append(card);
+            });
+          } else {
+            card = "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
+              "style=\"min-width:300px;max-width:300px;min-height:475px;\">" +
+              "<a href=\"../html/details.html?car=" + jsonData[i].car_id + "\" style=\"height:200px;\">" +
+              "<img src=\"../assets/placeholder_img_v2.png\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
+              "</a>" +
+              "<div class=\"card-body\"><hr>" +
+              "<h5 class=\"card-title\">" + jsonData[i].year + " " + jsonData[i].make + "<br>" + jsonData[i].model + " " + jsonData[i].trim + "</h5>" +
+              "<p class=\"card-title\"><u>" + jsonData[i].name + "</u><br>" + jsonData[i].street + "<br>" + jsonData[i].city + " " + jsonData[i].zip + "</p>" +
+              "<hr>" +
+              "<h5 class=\"card-text\">Posted Price:<br>" + formatter.format(jsonData[i].price) + "</h5>" +
+              //"<h5 class=\"card-text\">KBB Price:<br> $19,650</h5>" +
+              "<p class=\"card-text\"><small class=\"text-muted\">Last Update: " + jsonData[i].date + "</small></p>" +
+              "</div>" +
+              "</div>";
+
+            $("#card_deck").append(card);
+          }
+
         }
 
-        $("#card_deck").html(deck);
       } else {
         var noResult = "<div class=\"card px-1\"><h3>No results found...</h3></div>"
-
         $("#card_deck").html(noResult);
       }
 
@@ -277,6 +318,7 @@ $(document).ready(function() {
   */
   //Turn off button while list is Loaded
   $('#submitsearch').changeState(false);
+
   $.get("/choosencruise/PHP/API/get-car.php?search=false", function(data, status) {
     //Parse incoming data into manipulatable array
     var jsonData = JSON.parse(data);
@@ -308,7 +350,12 @@ $(document).ready(function() {
   /*****************************************************************************
                                   ON CHANGE LISTENERS
   *****************************************************************************/
-  //#make_dropdown onChange() listener
+  /*
+    #make_dropdown onChange() listener
+
+    This event listener waits for a change in the make_dropdown menu, then
+    waterfalls the correct search terms to the dropdowns below it.
+  */
   $('#make_dropdown').change(function() {
 
     //disable submit button
@@ -318,7 +365,8 @@ $(document).ready(function() {
     var makeVal = $("#make_dropdown").val();
 
     if (makeVal != "null") {
-      //Goto 'model' index on searchListJson
+      // Goto 'model' index on searchListJson - see searchListJson format
+      // in VARIABLES (top of the page) section
       var makeList = Object.keys(searchListJson[makeVal]);
 
       //Set loading status to model make_dropdown
@@ -328,6 +376,7 @@ $(document).ready(function() {
 
       //build option list for <select> element
       var list = $.newNullDropdownItem("Make...");
+
       //add data returned from query
       for (index = 0; index < makeList.length; ++index) {
         list += $.newDropdownItem(makeList[index]);
@@ -352,9 +401,6 @@ $(document).ready(function() {
       //Activate button
       $('#submitsearch').changeState(true);
     }
-
-
-
   });
 
   /**************************************
@@ -416,9 +462,21 @@ $(document).ready(function() {
     By: Christopher
     Updated: 3/22/2019
 
-    This on click listner waits for the submit button to the activated. When
+    This on click listner waits for the submit button to be activated. When
     clicked, cars from the database will be requested and inserted into the
     results table.
+
+    if(location is requested){
+      -Get list of zip codes (zip codes only) from DB filtered by dropdown menu
+          search terms
+      -Request distance of origin VS destinations from Google Distance Matrix
+        API
+      -Determine which zipcodes are within the distance of the origin
+      -GET request to DB for cars using search terms and valid zipcodes within
+        distance of origin
+    }else{
+      -GET request to DB for cars using search terms
+     }
 
   */
   $('#submitsearch').click(function() {
@@ -470,7 +528,7 @@ $(document).ready(function() {
         GET request is used to get the list of zip codes associated with
         the cars requested. The JSON data is immediately flattened to a 1d
         array for easy insertion to the Google Service Distance matrix
-        request. See $.flattenArray() implementation in helper function
+        request. See $.flattenArray() implementation in HELPER FUNCTION
         section for details
 
         returns data: a single column table with distinct zip codes.
@@ -527,7 +585,7 @@ $(document).ready(function() {
                   var element = results[j]
                   var elementDistance = element.distance.text;
 
-                  //                                   index:      1   2
+                  //                                    index:      1   2
                   // The distance value is a string with format: "26.1 mi". In
                   // order to compare each row distance to the user-input
                   // distance, the string is exploded with a whitespace and
