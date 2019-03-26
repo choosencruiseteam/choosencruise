@@ -25,11 +25,7 @@ folder hierarchy.
 ---------------
 .git - (GITHUB management folder, DO NOT MODIFY THIS)
 
-assets - Used to hold images for webpage
-
 library - (Hold referenced libraries, example: JQuery,Bootstrap)
-
-css - (Hold all CSS style sheets)
 
 html - (Hold all HTML files)
 
