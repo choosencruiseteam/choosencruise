@@ -23,7 +23,7 @@ $(document).ready(function() {
     <div class="carousel-item">
       <img class="d-block w-100" src="../assets/placeholder_img_v2.png" alt="Third slide">
     </div>
-  </div> 
+  </div>
   */
 
   /*******************************************************************************
@@ -32,6 +32,9 @@ $(document).ready(function() {
 
   /*
     Helper function to get URL parameters
+
+    Solution found from:
+    https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
 
     Example:
       URL:
@@ -72,8 +75,8 @@ $(document).ready(function() {
   *****************************************************************************/
 
   //Load head and footer layouts
-  $('#header').load('../html/header.html');
-  $('#footer').load('../html/footer.html');
+  $('#header').load('./html/header.html');
+  $('#footer').load('./html/footer.html');
 
   //Load car data. If infomation is null or invalid redirect to 404.
   var reqURL = "/choosencruise/PHP/API/get-car.php?detail=" + $.getUrlParameter('car');
