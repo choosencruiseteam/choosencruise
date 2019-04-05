@@ -31,7 +31,6 @@ get-car.php?where=true&make="Toyota"&model="Camry"&year="2018"
 
 *********************************************************************/
 
-//include('../Controller/DBConnect.php');
 include('../Controllers/ConnectionFactory.php');
 include('../Controllers/DBController.php');
 
@@ -249,3 +248,5 @@ try {
       echo json_encode(null);
     }
   }
+
+?>

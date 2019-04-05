@@ -45,15 +45,21 @@ $(document).ready(function() {
         var == true
   */
   $.getUrlParameter = function(sParam) {
-    var sPageURL = window.location.search.substring(1),
-      sURLVariables = sPageURL.split('&'),
-      sParameterName, i;
+    //Get param from URL
+    var sPageURL = window.location.search.substring(1);
+    //explode params into array
+    sURLVariables = sPageURL.split('&');
+    var sParameterName, i;
 
+    //Iterate through each name=var
     for (i = 0; i < sURLVariables.length; i++) {
+      //explode each param into name and variable
       sParameterName = sURLVariables[i].split('=');
 
+      //if request param name matches current index
       if (sParameterName[0] === sParam) {
-        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        //if param variable is undefined, return null, else return value
+        return sParameterName[1] === undefined ? null : decodeURIComponent(sParameterName[1]);
       }
     }
   };

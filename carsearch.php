@@ -1,3 +1,8 @@
+<?PHP
+  start_session();
+  include('./PHP/Controllers/SessionVerify.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,14 +10,14 @@
   <title>Search For a Car</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="manifest" href="manifest.json" />
+  <link rel="manifest" href="./html/manifest.json" />
   <meta name="theme-color" content="#007bff">
-  <link rel=icon href="../assets/favicon.ico">
+  <link rel=icon href="https://i.imgur.com/Su6GVUs.png">
 
   <!-- Bootstrap CSS (Internet req)
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   -->
-  <link rel="stylesheet" type="text/css" href="../library/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="./library/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 </head>
 
 <body style="background-color:#f8f9fa!important">
@@ -35,7 +40,7 @@
                 <a class="btn btn-secondary btn-lg disabled" href="#" role="button" aria-disabled="true">Learn more</a> (Coming Soon)
               </div>
               <div class="col">
-                <img src="../assets/timothy-muza-572-unsplash-500.png" alt="Photo by timothy muza on Unsplash" class="img-fluid" style="min-width:300px;max-width:520px;
+                <img src="https://i.imgur.com/S8LOEK4.png" alt="Photo by timothy muza on Unsplash" class="img-fluid" style="min-width:300px;max-width:520px;
                      width:100%;height:auto;">
               </div>
             </div>
@@ -82,7 +87,7 @@
                 <option value=50>50 miles</option>
                 </select>
                 <div>
-                  <img src="../assets/powered_by_google_on_white.png" alt="Powered By Google" class="img-fluid float-right my-1" style="width:auto; height:auto;">
+                  <img src="https://i.imgur.com/lm2DUmn.png" alt="Powered By Google" class="img-fluid float-right my-1" style="width:auto; height:auto;">
                 </div>
                 <input type="button" class="btn btn-primary mb-3" id="submitsearch" Value="Submit">
               </div>
@@ -116,10 +121,10 @@
   -->
 
 
-  <script src="../library/jquery-3.3.1.min.js"></script>
-  <script src="../library/bootstrap-4.3.1-dist/popper.min.js"></script>
-  <script src="../library/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
-  <script src="../javascript/carsearch.js"></script>
+  <script src="./library/jquery-3.3.1.min.js"></script>
+  <script src="./library/bootstrap-4.3.1-dist/popper.min.js"></script>
+  <script src="./library/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+  <script src="./javascript/carsearch.js"></script>
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGpA37QlMCtXJPUqDgR0RGxZm8bWvoqSk" type="text/javascript"></script>
 

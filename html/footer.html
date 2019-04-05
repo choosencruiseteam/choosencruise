@@ -9,7 +9,7 @@
       <div class="col-md-6 mt-md-0 mt-3 text-white">
         <!-- Content -->
         <div class="container">
-          <img class="center-block" src="../assets/logo-150.png" style="width:150px;height:auto">
+          <img class="center-block" src="https://i.imgur.com/f4vds0H.png" style="width:150px;height:auto">
           <p>A <b>better</b> way to shop.</p>
         </div>
         <!-- Grid column -->

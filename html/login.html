@@ -1,98 +1,89 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body {font-family: Arial, Helvetica, sans-serif;}
-    form {border: 3px solid #f1f1f1;}
+<html lang="en">
 
-    input[type=text], input[type=password] {
-      width: 100%;
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
+<head>
+  <title>Search For a Car</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#007bff">
+  <link rel=icon href="../assets/favicon.ico">
 
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 14px 20px;
-      margin: 8px 0;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-    }
+  <!-- Bootstrap CSS (Internet req)
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  -->
+  <link rel="stylesheet" type="text/css" href="../library/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+</head>
 
-    button:hover {
-      opacity: 0.8;
-    }
+<body style="background-color:#DCE3E9!important">
 
-    .cancelbtn {
-      width: auto;
-      padding: 10px 18px;
-      background-color: #f44336;
-    }
+  <!-- **Header div**  Loaded using: ../Javascript/carsearch.js  -->
+  <div class="header" id="header"></div>
 
-    .imgcontainer {
-      text-align: center;
-      margin: 24px 0 12px 0;
-    }
+  <div class="main">
 
-    img.avatar {
-      width: 40%;
-      border-radius: 50%;
-    }
-
-    .container {
-      padding: 16px;
-    }
-
-    span.psw {
-      float: right;
-      padding-top: 16px;
-    }
-
-    /* Change styles for span and cancel button on extra small screens */
-    @media screen and (max-width: 300px) {
-      span.psw {
-        display: block;
-        float: none;
-      }
-      .cancelbtn {
-        width: 100%;
-      }
-    }
-  </style>
-  </head>
-  <body>
-
-    <h2>Login Form</h2>
-
-    <form action="/action_page.php">
-      <div class="imgcontainer">
-        <img src="img_avatar2.png" alt="Avatar" class="avatar">
+    <form id='loginform' method="post" action="../PHP/API/auth.php" class="container border border-primary rounded p-4 shadow" style="background-color:#f8f9fa!important;max-width:400px;">
+      <h2>Welcome back!</h2>
+      <div class="form-group my-4">
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" class="form-control" name="u" id="username" aria-describedby="usernameHelp" placeholder="Enter username" required>
       </div>
-
-      <div class="container">
-        <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required>
-
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
-
-        <button type="submit">Login</button>
-        <label>
-          <input type="checkbox" checked="checked" name="remember"> Remember me
-        </label>
+      <div class="form-group my-4">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" class="form-control" name="p" id="password" placeholder="Password" required>
       </div>
-
-      <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn">Cancel</button>
-        <span class="psw">Forgot <a href="#">password?</a></span>
+      <!--
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="remember_check">
+        <label class="form-check-label" for="remember_check">Remember me?</label>
       </div>
+      -->
+      <input type="hidden" name="login" value="true">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="reset" class="btn btn-warning">Clear</button>
     </form>
 
-  </body>
+    <!-- **Footer div**
+    Loaded using:  ../Javascript/carsearch.js
+    -->
+    <div class="footer" id="footer"></div>
+
+  </div>
+
+  <script src="../library/jquery-3.3.1.min.js"></script>
+  <script src="../library/bootstrap-4.3.1-dist/popper.min.js"></script>
+  <script src="../library/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+  <!-- Script to handle form -->
+  <script>
+    $(document).ready(function() {
+      //Load head and footer layouts
+      $('#header').load('../html/header.html');
+      $('#footer').load('../html/footer.html');
+
+      $('form').on("submit", function(event) {
+        event.preventDefault();
+        var url = event.currentTarget.action;
+
+        $.ajax({
+          url: url,
+          type: 'post',
+          data: $('#loginform').serialize(),
+          success: function(data) {
+            console.log('SUCCESS: ' + JSON.stringify(data));
+            //handle success login
+            //handle fail login
+          },
+          error: function(data){
+            //handle error case
+          }
+        });
+
+      });
+
+    });
+  </script>
+
+</body>
+
 </html>

@@ -8,14 +8,6 @@
       public function __construct($DBConnect)
       {
           $this->DBConnect = $DBConnect;
-          /*
-          if($this->DBConnect == TRUE)
-            echo "<p>Connected<p>";
-          else if($this->DBConnect == FALSE)
-            echo "<p>Not Connected<p>";
-          else
-            echo "<p>Error<p>";
-            */
       }
 
       //Return an 2D array of result set
