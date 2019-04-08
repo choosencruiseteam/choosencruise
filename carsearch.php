@@ -1,5 +1,5 @@
 <?PHP
-  start_session();
+  session_start();
   include('./PHP/Controllers/SessionVerify.php');
 ?>
 

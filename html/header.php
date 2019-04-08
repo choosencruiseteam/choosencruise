@@ -20,24 +20,38 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="">Home<span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link active" href="http://localhost/choosencruise/carsearch.php">Home<span class="sr-only">(current)</span></a>
       <!-- <a class="nav-item nav-link" href="/ChooseNCruise/html/carsearch.html">Search for a car</a> -->
     </div>
     <div class="navbar-nav ml-auto">
 
-      <a class="nav-item nav-link" href="#">Login</a>
-      <!-- Unused links
-      <a class="nav-item nav-link" href="#">Sign up</a>
-      -->
+      <?php
+      session_start();
+        if(isset($_SESSION['user_auth']) && $_SESSION['user_auth'] === true){
+          echo "<div class=\"dropdown\">
+            <button class=\"btn btn-success dropdown-toggle border-dark\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">
+              Welcome back, ". $_SESSION['user'] .
+            "!</button>
+            <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">
+              <a class=\"dropdown-item\" href=\"#\">My Account</a>
+              <div class=\"dropdown-divider\"></div>
+              <a class=\"dropdown-item\" href=\"http://localhost/choosencruise/html/signout.php\">Sign out</a>
+            </div>
+          </div>";
+        }else{
+          echo "<a class=\"nav-item nav-link\" href=\"http://localhost/choosencruise/html/login.php\">Login</a>
+                <a class=\"nav-item nav-link\" href=\"#\">Sign up</a>";
+        }
+      ?>
     </div>
   </div>
 </nav>
 
+<!-- Warning banner -->
 <div class="alert alert-warning mt-3 mx-auto rounded border-warning" role="alert">
   <div class="row">
     <h3>ATTENTION</h3>
-    <img src="https://i.imgur.com/86GTaJ1.png" alt="http://www.publicdomainfiles.com/show_file.php?id=13928572813748"
-    style="width:35px;height:35px;">
+    <img src="https://i.imgur.com/86GTaJ1.png" alt="http://www.publicdomainfiles.com/show_file.php?id=13928572813748" style="width:35px;height:35px;">
   </div>
   <div class="row">
     <p>
@@ -47,3 +61,4 @@
     </p>
   </div>
 </div>
+<!-- Warning banner -->

@@ -1,20 +1,8 @@
 <?php
+include('C:\xampp\htdocs\ChooseNCruise\PHP\include.php');
 
 class Auth{
 
-  include('../Controllers/ConnectionFactory.php');
-  include('../Controllers/DBController.php');
-  include('../Controllers/SodiumManager.php');
-  include('../Controllers/TokenManager.php');
-
-  //Check API client key
-
-//Get static database connection
-  try {
-      $DBConnect = ConnectionFactory::getFactory()->getConnection();
-  } catch (Exception $e) {
-      echo json_encode("Error in establishing database connection: " . $e);
-  }
 
   /*    SESSION AND LOGIN VERIFICATION
 
@@ -31,7 +19,7 @@ class Auth{
     data: contains data of api operation, null if error or fail
 
   */
-    public static function verifyLogin($u, $s, $t){
+    public static function verifyLogin($DBConnect,$u, $s, $t){
 
       $user = $u;
       $sess = $s;
@@ -39,9 +27,8 @@ class Auth{
 
       $cc = new DBController($DBConnect);
       $SQLString = "SELECT * FROM sessions WHERE " .
-                      "username='" . $user . "' LIMIT 1" ;
+                      "username='$user' LIMIT 1" ;
       $data = $cc->queryGetAssoc($SQLString)[0];
-      var_dump($data);
 
       if($data !== null){
 

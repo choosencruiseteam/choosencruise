@@ -310,8 +310,8 @@ $(document).ready(function() {
   *****************************************************************************/
 
   //Load head and footer data
-  $('#header').load('./html/header.html');
-  $('#footer').load('./html/footer.html');
+  $('#header').load('./html/header.php');
+  $('#footer').load('./html/footer.php');
 
   /*
     #make_dropdown - inflate make_dropdown with list of makes
