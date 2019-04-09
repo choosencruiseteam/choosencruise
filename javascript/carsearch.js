@@ -214,7 +214,7 @@ $(document).ready(function() {
 
               card = "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
                 "style=\"min-width:300px;max-width:300px;min-height:475px;\">" +
-                "<a href=\"../html/details.html?car=" + this.jsonData.car_id + "\" style=\"height:200px;\">" +
+                "<a href=\"./details.html?car=" + this.jsonData.car_id + "\" style=\"height:200px;\">" +
                 "<img src=\""+imgURL+"\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
                 "</a>" +
                 "<div class=\"card-body\"><hr>" +
@@ -232,8 +232,8 @@ $(document).ready(function() {
           } else {
             card = "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
               "style=\"min-width:300px;max-width:300px;min-height:475px;\">" +
-              "<a href=\"../html/details.html?car=" + jsonData[i].car_id + "\" style=\"height:200px;\">" +
-              "<img src=\"../assets/placeholder_img_v2.png\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
+              "<a href=\"./details.html?car=" + jsonData[i].car_id + "\" style=\"height:200px;\">" +
+              "<img src=\"https://i.imgur.com/l5ysJiD.png\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
               "</a>" +
               "<div class=\"card-body\"><hr>" +
               "<h5 class=\"card-title\">" + jsonData[i].year + " " + jsonData[i].make + "<br>" + jsonData[i].model + " " + jsonData[i].trim + "</h5>" +
@@ -310,8 +310,8 @@ $(document).ready(function() {
   *****************************************************************************/
 
   //Load head and footer data
-  $('#header').load('../html/header.html');
-  $('#footer').load('../html/footer.html');
+  $('#header').load('./html/header.php');
+  $('#footer').load('./html/footer.php');
 
   /*
     #make_dropdown - inflate make_dropdown with list of makes

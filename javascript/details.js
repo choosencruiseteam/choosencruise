@@ -23,7 +23,7 @@ $(document).ready(function() {
     <div class="carousel-item">
       <img class="d-block w-100" src="../assets/placeholder_img_v2.png" alt="Third slide">
     </div>
-  </div> 
+  </div>
   */
 
   /*******************************************************************************
@@ -32,6 +32,9 @@ $(document).ready(function() {
 
   /*
     Helper function to get URL parameters
+
+    Solution found from:
+    https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
 
     Example:
       URL:
@@ -42,15 +45,21 @@ $(document).ready(function() {
         var == true
   */
   $.getUrlParameter = function(sParam) {
-    var sPageURL = window.location.search.substring(1),
-      sURLVariables = sPageURL.split('&'),
-      sParameterName, i;
+    //Get param from URL
+    var sPageURL = window.location.search.substring(1);
+    //explode params into array
+    sURLVariables = sPageURL.split('&');
+    var sParameterName, i;
 
+    //Iterate through each name=var
     for (i = 0; i < sURLVariables.length; i++) {
+      //explode each param into name and variable
       sParameterName = sURLVariables[i].split('=');
 
+      //if request param name matches current index
       if (sParameterName[0] === sParam) {
-        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        //if param variable is undefined, return null, else return value
+        return sParameterName[1] === undefined ? null : decodeURIComponent(sParameterName[1]);
       }
     }
   };
@@ -72,8 +81,8 @@ $(document).ready(function() {
   *****************************************************************************/
 
   //Load head and footer layouts
-  $('#header').load('../html/header.html');
-  $('#footer').load('../html/footer.html');
+  $('#header').load('./html/header.php');
+  $('#footer').load('./html/footer.php');
 
   //Load car data. If infomation is null or invalid redirect to 404.
   var reqURL = "/choosencruise/PHP/API/get-car.php?detail=" + $.getUrlParameter('car');

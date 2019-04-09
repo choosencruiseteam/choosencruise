@@ -51,7 +51,7 @@ class ConnectionFactory
     public function getConnection()
     {
         if (is_null($this->db)) {
-            include("../librarypass.php");
+            include('C:\xampp\htdocs\ChooseNCruise\PHP\librarypass.php');
             $this->db = new mysqli($host, $user, $pass, $DBName);
         }
 
