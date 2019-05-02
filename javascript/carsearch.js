@@ -209,12 +209,11 @@ $(document).ready(function() {
             };
 
             $.ajax(settings).done(function(response) {
-              console.log(response.data.link);
               var imgURL = response.data.link;
 
               card = "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
                 "style=\"min-width:300px;max-width:300px;min-height:475px;\">" +
-                "<a href=\"./details.html?car=" + this.jsonData.car_id + "\" style=\"height:200px;\">" +
+                "<a href=\"./details?car=" + this.jsonData.car_id + "\" style=\"height:200px;\">" +
                 "<img src=\""+imgURL+"\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
                 "</a>" +
                 "<div class=\"card-body\"><hr>" +
@@ -232,7 +231,7 @@ $(document).ready(function() {
           } else {
             card = "<div class=\"card mx-auto mb-3 border-secondary\" id=\"card\"" +
               "style=\"min-width:300px;max-width:300px;min-height:475px;\">" +
-              "<a href=\"./details.html?car=" + jsonData[i].car_id + "\" style=\"height:200px;\">" +
+              "<a href=\"./details?car=" + jsonData[i].car_id + "\" style=\"height:200px;\">" +
               "<img src=\"https://i.imgur.com/l5ysJiD.png\" height=\"auto\" width=\"300\" class=\"card-img-top p-1\" alt=\"...\">" +
               "</a>" +
               "<div class=\"card-body\"><hr>" +
