@@ -1,3 +1,8 @@
+<?PHP
+  session_start();
+  include('./PHP/Controllers/SessionVerify.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,9 +41,9 @@
             <ol id="carousel-indicators" class="carousel-indicators invisible">
             </ol>
 
-              <!-- img size must be 800x500 -->
-              <div id="carousel-inner" class="carousel-inner invisible" style="height:100%">
-              </div>
+            <!-- img size must be 800x500 -->
+            <div id="carousel-inner" class="carousel-inner invisible" style="height:100%">
+            </div>
 
             <a id="carousel-control-prev" class="carousel-control-prev invisible" href="#car_carousel" role="button" data-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -73,8 +78,8 @@
 
           <!-- Button Container -->
           <div class="row my-3">
-            <a href="#" class="btn btn-warning btn-lg mx-auto my-1 shadow" style="width:170px;" role="button">Appointment</a>
-            <a href="#" class="btn btn-primary btn-lg mx-auto my-1 shadow" style="width:170px;" role="button">Delivery</a>
+            <input type="button" id="delivery-btn" class="btn btn-primary btn-lg mx-auto my-1 shadow" style="width:170px;" value="Delivery">
+            <input type="button" id="appointment-btn" class="btn btn-warning btn-lg mx-auto my-1 shadow" style="width:170px;" value="Appointment">
           </div>
 
           <!-- Info pane -->
@@ -111,9 +116,6 @@
   <script src="./library/bootstrap-4.3.1-dist/popper.min.js"></script>
   <script src="./library/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
   <script src="./javascript/details.js"></script>
-
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGpA37QlMCtXJPUqDgR0RGxZm8bWvoqSk" type="text/javascript"></script>
-
 </body>
 
 </html>
