@@ -65,6 +65,11 @@
             $('#privacy_link').click(function() {
               popupWindow("./privacypolicy.html", "Privacy Policy");
             });
+
+            $('#tandc_link').click(function() {
+              popupWindow("/choosencruise/html/FinanceTandC.html", "Financing Terms and Condition");
+
+            });
           });
         </script>
 
@@ -101,7 +106,7 @@
   <!-- Footer Links -->
 
   <!-- Copyright -->
-  <div class="footer-copyright text-center py-3 text-white">© 2018 Copyright:
+  <div class="footer-copyright text-center py-3 text-white">© 2019 Copyright:
     <a href="localhost/ChooseNCruise/index.html"> ChooseNCruise.com</a>
   </div>
   <!-- Copyright -->
