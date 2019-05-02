@@ -230,7 +230,8 @@ try {
                              c.transmission, c.mileage,
                    DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
                                c.make,c.model,c.trim,c.year, cl.name,cl.street,
-                               cl.state,cl.city,cl.zip,cl.phone,i.album_hash AS album
+                               cl.state,cl.city,cl.zip,cl.phone,i.album_hash AS album,
+                               i.main_img_hash AS img
                         FROM cars AS c
                         INNER JOIN carlots AS cl ON c.carlot_id = cl.carlot_id
                         LEFT JOIN imgur_bank AS i ON i.car_id = c.car_id

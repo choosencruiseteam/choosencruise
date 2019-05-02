@@ -138,6 +138,12 @@
     }
   }
 
+  /*
+
+    TODO: FINISH DOCUMENTING THIS FILE
+
+  */
+
   if(isset($_GET['destroy'])){
 
     $dbDeleteStatus = null;
