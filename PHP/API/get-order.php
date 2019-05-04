@@ -2,7 +2,7 @@
 include('../Controllers/ConnectionFactory.php');
 include('../Controllers/DBController.php');
 include('../Controllers/Validation.php');
-
+session_start();
 
 //Get static database connection
 try {
@@ -15,42 +15,27 @@ if(isset($_GET['delivery'])){
 
   $validationResult = Validate::all($_POST);
 
-  if($validationResult['status'] == true){
-
-    //insert in DB
-    $cust_id = $_POST['user'];
-    $req_date = $_POST['req_date'];
-    $car_id = $_POST['car'];
-    $final_price = $_POST['final_price'];
-    $fname = $_POST['fname'];
-    $lname = $_POST['lname'];
-    $street = $_POST['street'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
-    $zip = $_POST['zip'];
-    $phone = $_POST['phone'];
-
-    //Insert new delivery order
+  if($_GET['delivery'] == 'all'){}
     $cc = new DBController($DBConnect);
-    $SQLString = "INSERT INTO delivery (cust_id,order_date,req_date,expected_delivery_date,car_id,final_price, first_name, last_name, street, city, state,zip, phone)
-      VALUES('$cust_id',now(),'$req_date','pending','$car_id','$final_price','$fname','$lname','$street','$city','$state','$zip','$phone' )";
+    $SQLString = 'SELECT distinct d.delivery_id,i.main_img_hash,d.final_price,
+                                  d.order_date,d.req_date,d.expected_delivery_date,
+				                          cl.name,cl.street,cl.state,cl.city,cl.zip,cl.phone,
+                                  c.make,c.model,c.year,c.trim from delivery As d
+                inner join cars as c on c.car_id = d.car_id
+                inner join carlots AS cl on c.carlot_id=cl.carlot_id
+                left join imgur_bank as i on i.car_id = d.car_id where cust_id='.$_SESSION['id'].' order by d.delivery_id desc';
+    $result = $cc->queryGetAssoc($SQLString);
 
-    $result = $cc->queryInsert($SQLString);
+    if($result != null){
+      $response = array('status'=>true,'result'=>$result);
+      echo json_encode($response);
+    }else{
+      $response = array('status'=>false,'result'=>null);
+      echo json_encode($response);
+    }
 
-    //make car unavailable
-    $SQLString = "UPDATE cars SET avail=0 WHERE cars.car_id =". $car_id;
-    $cc->queryInsert($SQLString);
-
-    $response = array('status'=>true,'result'=>$result);
-    echo json_encode($response);
-
-  }else if($validationResult['status'] == false){
-    //return error data from validation
-    echo json_encode($validationResult);
-  }else{
-    echo json_encode(array('status'=>null));
   }
-}
+
 
 if(isset($_GET['appointment'])){
   $validationResult = Validate::all($_POST);
