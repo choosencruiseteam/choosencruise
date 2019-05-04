@@ -32,6 +32,9 @@
       <div class="row m-0">
         <div class="col-sm-8">
           <!-- Left column -->
+          <div class="alert alert-danger d-none" id="err">
+            <strong>Please fix the following below:</strong><br>
+          </div>
           <div class="border m-3 p-3 rounded shadow" style="background-color:#FFFFFF!important">
             <!-- User module -->
             <h3><u>Your information</u></h3>
@@ -51,15 +54,15 @@
               <div class="col-md-4 mb-3">
                 <label for="fname">First name</label>
                 <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" required>
-                <div class="valid-feedback">
-                  Looks good!
+                <div class="invalid-feedback">
+                  Please provide a valid first name.
                 </div>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="lname">Last name</label>
                 <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" required>
-                <div class="valid-feedback">
-                  Looks good!
+                <div class="invalid-feedback">
+                  Please provide a valid last name.
                 </div>
               </div>
 
@@ -189,12 +192,15 @@
             <div>Please go over the delivery information below, you may request a date for your delivery:</div>
             <hr>
             <div class="form-check form-inline my-1">
-              <label class="form-check-label" for="card_cvv">
-                Requested Date:&nbsp;
-              </label>
-              <input type="date" id="delivery_date" class="form-control" value="" name="req_date" required>
+              <label class="sr" for="delivery_dropdown">Request a delivery time frame:&nbsp;</label>
+              <select class="form-control" id="delivery_date" name="req_date" form="delivery_form">
+                <option value="ASAP">ASAP (1 to 2 days)</option>
+                <option value="1 week">Within 7 days</option>
+                <option value="2 weeks">Within 7 to 14 days</option>
+                <option value="3 weeks">Within 14 to 21 days</option>
+                <option value="4 weeks">Within 21 to 28 days</option>
+              </select>
             </div>
-
             <div class="form-check form-inline my-1">
               <label class="form-check-label" for="card_cvv">
                 Delivery Charge:&nbsp;
@@ -240,9 +246,10 @@
               </div>
               <div class="row border border-dark rounded p-1 px-2">
                 <div>$</div>
-                <div id="final_price_breakdown"></div>
+                <div id="final_price_breakdown" name="final_price"></div>
                 <div>&nbsp;- Final Price</div>
               </div>
+              <input type="hidden" name="final_price" id="final_price" value=0>
             </div>
             <hr>
 
@@ -251,7 +258,7 @@
             <input type="submit" id="submit-btn" class="btn btn-primary btn-lg mx-auto my-1 shadow" style="width:170px;" value="Checkout">
             <div class="d-flex justify-content-center">
               <div id="load_spinner" class="spinner-border text-primary my-1 mx-auto invisible" role="status">
-            </div>
+              </div>
             </div> <!-- END vehicle module -->
 
           </div>

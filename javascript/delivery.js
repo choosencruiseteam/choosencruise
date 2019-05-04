@@ -34,6 +34,23 @@ $(document).ready(function() {
     }
   };
 
+  $.setErrors = function(data) {
+    data.forEach(function(index) {
+      $('#' + index.field).addClass('is-invalid');
+      $('#err').append(index.msg + "<br>");
+    });
+
+    $('#err').removeClass('d-none');
+  }
+
+  $.resetFields = function() {
+    $($('form').prop('elements')).each(function() {
+      var $field = $(this);
+      $field.removeClass('is-invalid');
+    });
+    $('#err').addClass('d-none');
+  }
+
   //Load head and footer data
   $('#footer').load('./html/footer.php');
   $('#header').load('./html/header.php');
@@ -111,6 +128,7 @@ $(document).ready(function() {
     $('#taxes_breakdown').html(tax);
     $('#delivery_charge_breakdown').html(del_charge);
     $('#final_price_breakdown').html(final_price);
+    $('#final_price').val(final_price);
 
 
     $('#delivery_charge').val(formatter.format(del_charge));
@@ -120,6 +138,8 @@ $(document).ready(function() {
   //Handle submission
   $('form').on("submit", function(event) {
     event.preventDefault();
+    $.resetFields();
+
     var url = event.currentTarget.action;
 
     $('#submit-btn').removeClass("btn-primary").addClass("btn-secondary");
@@ -129,29 +149,25 @@ $(document).ready(function() {
     $.ajax({
       url: url,
       type: 'post',
-      data: $('#loginform').serialize(),
+      data: $('#delivery_form').serialize(),
       success: function(data) {
-        var loginStatus = JSON.parse(data).data;
-        //handle success login
-        if(loginStatus == true){
-          $('#username').removeClass("is-invalid").addClass("is-valid");
-          $('#password').removeClass("is-invalid").addClass("is-valid");;
-          $('#alert').addClass("invisible");
-          window.location.href = document.referrer;
-        }else if(loginStatus == false){
-          //handle fail login
-          $('#username').addClass("is-invalid");
-          $('#password').addClass("is-invalid");
-          $('#alert').removeClass("invisible");
+        var response = JSON.parse(data);
+        var status = response.status;
 
-          //reactivate button
+        if (status == true) {
+            window.location.href = "http://localhost/choosencruise/confirmation?delivery"
+        } else if (status == false) {
+          //turn off loading spinner, turn on button
           $('#submit-btn').removeClass("btn-secondary").addClass("btn-primary");
           $('#submit-btn').removeAttr('disabled');
+          $('#load_spinner').addClass('invisible');
 
+          //display err msg
+          $.setErrors(response.data);
         }
       },
       error: function(data){
-        //handle error case
+        console.log("An error with the request has occured.")
       }
     });
 
