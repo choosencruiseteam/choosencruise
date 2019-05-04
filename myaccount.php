@@ -34,7 +34,7 @@
         <a class="nav-item nav-link" id="nav-appointment-tab" data-toggle="tab" href="#nav-appointment" role="tab" aria-controls="nav-appointment" aria-selected="false">Appointments</a>
       </div>
     </nav>
-    <div class="tab-content" id="nav-tabContent" style="background-color:#FFFFFF!important">
+    <div class="tab-content pt-3" id="nav-tabContent" style="background-color:#FFFFFF!important">
       <div class="tab-pane fade" id="nav-account" role="tabpanel" aria-labelledby="nav-account-tab">
 
         <form class="needs-validation p-4" method="post" action="..." novalidate>
@@ -43,7 +43,7 @@
             <div class="col-md-4 mb-3">
               <label for="validationCustomUsername">Username</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="validationCustomUsername" placeholder="Username" disabled>
+                <input type="text" class="form-control" id="username" placeholder="Username" disabled>
                 <div class="invalid-feedback">
                   Please choose a username.
                 </div>
@@ -51,14 +51,14 @@
             </div>
             <div class="col-md-4 mb-3">
               <label for="validationCustom01">First name</label>
-              <input type="text" class="form-control" id="validationCustom01" placeholder="First name" value="Mark" required>
+              <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" value="Mark" required>
               <div class="valid-feedback">
                 Looks good!
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <label for="validationCustom02">Last name</label>
-              <input type="text" class="form-control" id="validationCustom02" placeholder="Last name" value="Otto" required>
+              <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" value="Otto" required>
               <div class="valid-feedback">
                 Looks good!
               </div>
@@ -68,35 +68,35 @@
           <div class="form-row">
             <div class="col-md-6 mb-3">
               <label for="validationCustom03">Street</label>
-              <input type="text" class="form-control" id="validationCustom03" placeholder="Street" required>
+              <input type="text" class="form-control" id="street" name="street" placeholder="Street" required>
               <div class="invalid-feedback">
                 Please provide a valid street.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="validationCustom04">City</label>
-              <input type="text" class="form-control" id="validationCustom04" placeholder="City" required>
+              <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
               <div class="invalid-feedback">
                 Please provide a valid city.
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <label for="validationCustom05">State</label>
-              <input type="text" class="form-control" id="validationCustom05" placeholder="State" required>
+              <input type="text" class="form-control" id="state" name="state" placeholder="State" required>
               <div class="invalid-feedback">
                 Please provide a valid state.
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <label for="validationCustom06">Zip</label>
-              <input type="text" class="form-control" id="validationCustom06" placeholder="Zip" required>
+              <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip" required>
               <div class="invalid-feedback">
                 Please provide a valid zip.
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <label for="validationCustom07">Phone Number</label>
-              <input type="tel" class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" id="validationCustom07" placeholder="Phone Number" required>
+              <input type="tel" class="form-control" pattern="[0-9]{10}" id="phone" name="phone" placeholder="Phone Number" required>
               <div class="invalid-feedback">
                 Please provide a valid telephone number
               </div>
@@ -132,7 +132,7 @@
       <div class="tab-pane fade show active" id="nav-delivery" role="tabpanel" aria-labelledby="nav-delivery-tab">
 
         <div class="table-responsive">
-          <table class="table table-bordered">
+          <table class="table table-bordered" id="delivery_table">
             <thead class="thead-dark">
               <tr>
                 <th>#</th>
@@ -142,31 +142,6 @@
                 <th>Notes</th>
               </tr>
             </thead>
-            <tr>
-              <td>893743789</td>
-              <td style="width:200px">
-                <img src="https://i.imgur.com/PUbEIhu.jpg" alt="" width="200" height="auto">
-              </td>
-              <td style="min-width:200px">
-                <div>2018 Toyota Camry R</div>
-                <hr>
-                <div><b>Final Price: $32,082</b></div>
-              </td>
-              <td style="min-width:170px">
-                <h5>Cruisin' Toyota</h5>
-                <div>123 address Street</div>
-                <div>San Antonio, TX 78109</div>
-                <div>(210)-124-9782</div>
-              </td>
-              <td style="min-width:170px">
-                <h3>Status: Pending</h3>
-                <hr>
-                <div>Estimated Delivery: 5 - 7 days</div>
-              </td>
-              <td style="min-width:170px;max-height:250px">
-                <div>This can be used for delivery or dealership notes</div>
-              </td>
-            </tr>
           </table>
         </div>
 
