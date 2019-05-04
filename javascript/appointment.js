@@ -34,6 +34,23 @@ $(document).ready(function() {
     }
   };
 
+  $.setErrors = function(data) {
+    data.forEach(function(index) {
+      $('#' + index.field).addClass('is-invalid');
+      $('#err').append(index.msg + "<br>");
+    });
+
+    $('#err').removeClass('d-none');
+  }
+
+  $.resetFields = function() {
+    $($('form').prop('elements')).each(function() {
+      var $field = $(this);
+      $field.removeClass('is-invalid');
+    });
+    $('#err').addClass('d-none');
+  }
+
   //Load head and footer data
   $('#footer').load('./html/footer.php');
   $('#header').load('./html/header.php');
@@ -51,10 +68,6 @@ $(document).ready(function() {
       $('#username').val(user_data['username']);
       $('#fname').val(user_data['first_name']);
       $('#lname').val(user_data['last_name']);
-      $('#street').val(user_data['street']);
-      $('#city').val(user_data['city']);
-      $('#state').val(user_data['state']);
-      $('#zip').val(user_data['zip']);
       $('#phone').val(user_data['phone']);
     }
   });
@@ -79,12 +92,12 @@ $(document).ready(function() {
 
         $.ajax(settings).done(function(response) {
           var imgURL = response.data.link;
-          $("#vehicle_img").attr('src',imgURL);
+          $("#vehicle_img").attr('src', imgURL);
 
         });
       } else {
         //Assign 'no image available' to frame
-        $("#vehicle_img").attr('src',"https://i.imgur.com/l5ysJiD.png");
+        $("#vehicle_img").attr('src', "https://i.imgur.com/l5ysJiD.png");
       }
     }
 
@@ -92,5 +105,43 @@ $(document).ready(function() {
     $('#vehicle_engine').html("Engine: " + car.engine);
     $('#vehicle_transmission').html("Transmission: " + car.transmission);
     $('#vehicle_mileage').html("Mileage: " + car.mileage);
+  });
+
+  //handle appoitment form submission
+  $('form').on("submit", function(event) {
+    event.preventDefault();
+    $.resetFields();
+
+    var url = event.currentTarget.action;
+
+    $('#submit-btn').removeClass("btn-warning").addClass("btn-secondary");
+    $('#submit-btn').attr('disabled', 'disabled');
+    $('#load_spinner').removeClass('invisible');
+
+
+    $.ajax({
+      url: url,
+      type: 'post',
+      data: $('#appointment_form').serialize(),
+      success: function(data) {
+        var response = JSON.parse(data);
+        var status = response.status;
+
+        if (status == true) {
+          window.location.href = "http://localhost/choosencruise/confirmation?appt"
+        } else if (status == false) {
+          //turn off loading spinner, turn on button
+          $('#submit-btn').removeClass("btn-secondary").addClass("btn-warning");
+          $('#submit-btn').removeAttr('disabled');
+          $('#load_spinner').addClass('invisible');
+
+          //display err msg
+          $.setErrors(response.data);
+        }
+      },
+      error: function(data) {
+        //handle error case
+      }
+    });
   });
 });

@@ -27,11 +27,15 @@
   <!-- Start Main Class -->
   <div class="main">
 
-    <form class="p-4" method="post" action="#">
+    <form class="p-4" id="appointment_form" method="post" action="http://localhost/choosencruise/PHP/API/submit-task.php?appointment">
       <input type="hidden" name="sch_type" value="appointment">
       <div class="row m-0">
         <div class="col-sm-8">
           <!-- Left column -->
+          <div class="alert alert-danger d-none" id="err">
+            <strong>Please fix the following below:</strong><br>
+          </div>
+
           <div class="border m-3 p-3 rounded shadow" style="background-color:#FFFFFF!important">
             <!-- User module -->
             <h3><u>Your information</u></h3>
@@ -43,64 +47,25 @@
                 <label for="username">Username</label>
                 <div class="input-group">
                   <input type="text" class="form-control" id="username" placeholder="Username" disabled>
-                  <div class="invalid-feedback">
-                    Please choose a username.
-                  </div>
                 </div>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="fname">First name</label>
                 <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" required>
-                <div class="valid-feedback">
-                  Looks good!
-                </div>
               </div>
               <div class="col-md-4 mb-3">
                 <label for="lname">Last name</label>
                 <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" required>
-                <div class="valid-feedback">
-                  Looks good!
-                </div>
               </div>
-
             </div>
+
             <div class="form-row">
-              <div class="col-md-6 mb-3">
-                <label for="street">Street</label>
-                <input type="text" class="form-control" id="street" name="street" placeholder="Street" required>
-                <div class="invalid-feedback">
-                  Please provide a valid street.
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="city">City</label>
-                <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
-                <div class="invalid-feedback">
-                  Please provide a valid city.
-                </div>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="state">State</label>
-                <input type="text" class="form-control" id="state" name="state" placeholder="State" required>
-                <div class="invalid-feedback">
-                  Please provide a valid state.
-                </div>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="zip">Zip</label>
-                <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip" pattern="[0-9]{5}" required>
-                <div class="invalid-feedback">
-                  Please provide a valid zip.
-                </div>
-              </div>
               <div class="col-md-4 mb-3">
                 <label for="phone">Phone Number</label>
                 <input type="tel" class="form-control" name="phone" id="phone" placeholder="1112223333" pattern="[0-9]{10}" required>
-                <div class="invalid-feedback">
-                  Please provide a valid telephone number
-                </div>
               </div>
             </div>
+
           </div><!-- END user module -->
 
           <div class="border m-3 p-3 rounded shadow" style="background-color:#FFFFFF!important">
@@ -136,12 +101,16 @@
 
             <input type="hidden" id="user" name="user">
             <input type="hidden" id="car" name="car">
-            <input type="submit" class="btn btn-warning btn-lg mx-auto my-1 shadow" style="width:170px;" value="Schedule">
+            <input type="submit" id="submit-btn" class="btn btn-warning btn-lg mx-auto my-1 shadow" style="width:170px;" value="Schedule">
+            <div class="d-flex justify-content-center">
+              <div id="load_spinner" class="spinner-border text-primary my-1 mx-auto invisible" role="status">
+            </div>
+
           </div> <!-- END vehicle module -->
 
         </div>
         <!--END right column -->
-
+      </div>
     </form>
   </div> <!-- Main end -->
 
