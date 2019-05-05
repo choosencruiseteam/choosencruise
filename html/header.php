@@ -7,10 +7,7 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       <a class="nav-item nav-link active" href="http://localhost/choosencruise/mainpage.php">Home<span class="sr-only">(current)</span></a>
-      <!-- <a class="nav-item nav-link" href="/ChooseNCruise/html/carsearch.html">Search for a car</a> -->
-      <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search for keyword" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <a class="nav-item nav-link" href="http://localhost/ChooseNCruise/carsearch.php">Search for a car</a> 
     </div>
     <div class="navbar-nav ml-auto">
 
