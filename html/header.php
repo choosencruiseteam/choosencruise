@@ -1,13 +1,16 @@
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="#"><img src="https://i.imgur.com/f4vds0H.png" style="width:100px;height:60px"></a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="http://localhost/choosencruise/mainpage.php"><img src="https://i.imgur.com/f4vds0H.png" style="width:100px;height:60px"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="http://localhost/choosencruise/carsearch.php">Home<span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link active" href="http://localhost/choosencruise/mainpage.php">Home<span class="sr-only">(current)</span></a>
       <!-- <a class="nav-item nav-link" href="/ChooseNCruise/html/carsearch.html">Search for a car</a> -->
+      <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search for keyword" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </div>
     <div class="navbar-nav ml-auto">
 
