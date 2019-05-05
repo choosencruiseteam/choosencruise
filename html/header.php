@@ -21,7 +21,7 @@
             <button class=\"btn btn-success dropdown-toggle border-dark\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">
               Welcome back, ". $user . "!</button>
             <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">
-              <a class=\"dropdown-item\" href=\"#\">My Account</a>
+              <a class=\"dropdown-item\" href=\"http://localhost/choosencruise/myaccount.php\">My Account</a>
               <div class=\"dropdown-divider\"></div>
               <a class=\"dropdown-item\" href=\"http://localhost/choosencruise/html/signout.php\">Sign out</a>
             </div>
