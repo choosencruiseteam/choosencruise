@@ -12,11 +12,8 @@ try {
 }
 
 if(isset($_GET['delivery'])){
-
   $validationResult = Validate::all($_POST);
-
   if($validationResult['status'] == true){
-
     //insert in DB
     $cust_id = $_POST['user'];
     $req_date = $_POST['req_date'];
@@ -74,6 +71,42 @@ if(isset($_GET['appointment'])){
     echo json_encode($response);
   }else if($validationResult['status'] == false){
     //return error data from validation
+    echo json_encode($validationResult);
+  }else{
+    echo json_encode(array('status'=>null));
+  }
+}
+
+if(isset($_GET['update_user'])){
+
+  $validationResult = Validate::all($_POST);
+
+  if($validationResult['status'] == true){
+
+    //insert in DB
+    $fname = $_POST['fname'];
+    $lname = $_POST['lname'];
+    $street = $_POST['street'];
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $zip = $_POST['zip'];
+    $phone = $_POST['phone'];
+
+    //Insert new delivery order
+    $cc = new DBController($DBConnect);
+    $SQLString = "UPDATE customer
+                  SET first_name='$fname', last_name='$lname', street='$street',
+                      city='$city', state='$state',zip='$zip', phone='$phone'
+                  WHERE cust_id=". $_SESSION['id'];
+
+
+    $result = $cc->queryInsert($SQLString);
+
+    $response = array('status'=>true,'result'=>$result);
+    echo json_encode($response);
+
+  }else if($validationResult['status'] == false){
+
     echo json_encode($validationResult);
   }else{
     echo json_encode(array('status'=>null));
