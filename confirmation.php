@@ -36,7 +36,7 @@
         else if(isset($_GET['appt']))
           $type = "appointment";
 
-        echo "<div class=\"container p-4 border shadow rounded\" style=\" background-color:#FFFFFF!important\">";
+        echo "<div class=\"container p-4 border border-primary shadow rounded\" style=\" background-color:#FFFFFF!important\">";
         echo "<h1>Confirmation</h1>";
         echo "<h4>Your " . $type . " has been successfully scheduled. Please expect
               a call from the dealership within 24 hours for further information!</h4>";
