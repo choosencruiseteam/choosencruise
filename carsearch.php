@@ -56,18 +56,18 @@
             <form>
               <div class="form-group">
                 <label class="sr-only" for="make_dropdown">Make:</label>
-                <select placeholder="Make" class="form-control mb-3" name="make" id="make_dropdown" />
-                <option value="loading">Loading...</option>
+                <select placeholder="Make" class="form-control mb-3" name="make" id="make_dropdown">
+                  <option value="loading">Loading...</option>
                 </select>
 
                 <label class="sr-only" for="model_dropdown">Model:</label>
-                <select placeholder="Model" class="form-control mb-3" name="model" id="model_dropdown" />
-                <option value="loading">Loading...</option>
+                <select placeholder="Model" class="form-control mb-3" name="model" id="model_dropdown">
+                  <option value="loading">Loading...</option>
                 </select>
 
                 <label class="sr-only" for="year_dropdown">Year:</label>
-                <select placeholder="Year" class="form-control mb-3" name="year" id="year_dropdown" />
-                <option value="loading">Loading...</option>
+                <select placeholder="Year" class="form-control mb-3" name="year" id="year_dropdown">
+                  <option value="loading">Loading...</option>
                 </select>
 
                 <h4>Location</h4>
@@ -77,14 +77,14 @@
                 <input type='text' class="form-control mb-3" placeholder="Enter zip.." id="zip_textbox">
 
                 <label class="sr-only" for="distance_dropdown">Year:</label>
-                <select placeholder="Distance" class="form-control mb-3" name="distance" id="distance_dropdown" />
-                <option value=null>Distance..</option>
-                <option value=5>5 miles</option>
-                <option value=10>10 miles</option>
-                <option value=20>20 miles</option>
-                <option value=30>30 miles</option>
-                <option value=40>40 miles</option>
-                <option value=50>50 miles</option>
+                <select placeholder="Distance" class="form-control mb-3" name="distance" id="distance_dropdown">
+                  <option value=null>Distance..</option>
+                  <option value=5>5 miles</option>
+                  <option value=10>10 miles</option>
+                  <option value=20>20 miles</option>
+                  <option value=30>30 miles</option>
+                  <option value=40>40 miles</option>
+                  <option value=50>50 miles</option>
                 </select>
                 <div>
                   <img src="https://i.imgur.com/lm2DUmn.png" alt="Powered By Google" class="img-fluid float-right my-1" style="width:auto; height:auto;">

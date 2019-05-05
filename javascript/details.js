@@ -194,4 +194,36 @@ $(document).ready(function() {
     }
   });
 
+  $("#delivery-btn").click(function(){
+    var user_auth = $("#user_auth").val();
+
+    if(user_auth == 1){
+      var carid = $.getUrlParameter('car');
+      window.location.href = "http://localhost/choosencruise/delivery?car=" + carid;
+    }
+    else if(user_auth == 0){
+      window.location.href = "http://localhost/choosencruise/html/login";
+    }
+    else{
+      window.location.href = "http://localhost/choosencruise/carsearch";
+    }
+
+  });
+
+  $("#appointment-btn").click(function(){
+    var user_auth = $("#user_auth").val();
+
+    if(user_auth == 1){
+      var carid = $.getUrlParameter('car');
+      window.location.href = "http://localhost/choosencruise/appointment?car=" + carid;
+    }
+    else if(user_auth == 0){
+      window.location.href = "http://localhost/choosencruise/html/login";
+    }
+    else{
+      window.location.href = "http://localhost/choosencruise/carsearch";
+    }
+
+  });
+
 });

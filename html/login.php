@@ -78,7 +78,6 @@
           type: 'post',
           data: $('#loginform').serialize(),
           success: function(data) {
-            console.log('SUCCESS: ' + JSON.stringify(data));
             var loginStatus = JSON.parse(data).data;
             //handle success login
             if(loginStatus == true){

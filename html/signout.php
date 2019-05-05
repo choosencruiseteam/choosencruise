@@ -26,7 +26,7 @@
 
   <div class="main">
 
-    <div class="jumbotron jumbotron-fluid border border-primary shadow rounded p-5 mx-auto" style="max-width:800px;">
+    <div class="jumbotron jumbotron-fluid border border-primary shadow rounded p-5 mx-auto" style="max-width:800px;background-color:#ffffff!important">
       <div class="container-fluid">
         <div class="row">
           <?php

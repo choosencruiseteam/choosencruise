@@ -54,24 +54,24 @@ try {
               $make = $_GET['make'];
               $model = $_GET['model'];
               $SQLString = "SELECT distinct year FROM cars WHERE make=". $make .
-                "AND model=" . $model;
+                "AND model=" . $model . " AND avail=1";
               $list = $cc->queryGetArray($SQLString);
               echo json_encode($list);
           } elseif (isset($_GET['make'])) {
               //get models with make filter
               $cc = new DBController($DBConnect);
               $make = $_GET['make'];
-              $SQLString = "SELECT distinct model FROM cars WHERE make=". $make;
+              $SQLString = "SELECT distinct model FROM cars WHERE make=". $make . "  AND avail=1";
               $list = $cc->queryGetArray($SQLString);
               echo json_encode($list);
           } else {
               $cc = new DBController($DBConnect);
-              $list = $cc->queryGetArray("SELECT distinct make FROM cars");
+              $list = $cc->queryGetArray("SELECT distinct make FROM cars WHERE avail=1");
               echo json_encode($list);
           }
       } elseif ($_GET['search'] === "false") {
           $cc = new DBController($DBConnect);
-          $list = $cc->queryGetArray("SELECT make,model,year FROM cars");
+          $list = $cc->queryGetArray("SELECT make,model,year FROM cars WHERE avail=1");
           echo json_encode($list);
       }
   }
@@ -93,7 +93,7 @@ try {
                                cl.state,cl.city,cl.zip, i.main_img_hash AS img
                         FROM cars AS c
                         INNER JOIN carlots AS cl ON c.carlot_id=cl.carlot_id
-                        LEFT JOIN imgur_bank AS i ON i.car_id = c.car_id';
+                        LEFT JOIN imgur_bank AS i ON i.car_id = c.car_id  WHERE avail=1';
 
 
           $list = $cc->queryGetAssoc($SQLString);
@@ -155,6 +155,9 @@ try {
                   $SQLString .= "AND";
               }
           }
+
+          $SQLString .= " AND avail=1";
+
           $list = $cc->queryGetAssoc($SQLString);
 
           echo json_encode($list);
@@ -206,7 +209,7 @@ try {
           }
       }
 
-
+      $SQLString .= " AND avail=1";
       $list = $cc->queryGetArray($SQLString);
       echo json_encode($list);
   }
@@ -230,11 +233,12 @@ try {
                              c.transmission, c.mileage,
                    DATE_FORMAT(c.carlot_price_last_updated,"%m-%d-%Y") AS date,
                                c.make,c.model,c.trim,c.year, cl.name,cl.street,
-                               cl.state,cl.city,cl.zip,cl.phone,i.album_hash AS album
+                               cl.state,cl.city,cl.zip,cl.phone,i.album_hash AS album,
+                               i.main_img_hash AS img
                         FROM cars AS c
                         INNER JOIN carlots AS cl ON c.carlot_id = cl.carlot_id
                         LEFT JOIN imgur_bank AS i ON i.car_id = c.car_id
-                        WHERE c.car_id='.$queryVal;
+                        WHERE c.car_id='.$queryVal . '  AND avail=1';
 
         $cc = new DBController($DBConnect);
         $result = $cc->queryGetAssoc($SQLString);

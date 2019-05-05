@@ -1,17 +1,3 @@
-<!-- OLD HEADER
-  <div class="header">
-    <h1>Choose & Cruise</h1>
-    <p>A <b>better</b> way to shop.</p>
-  </div>
-
-  <div class="navbar">
-    <a href="/choosencruise/index.html" class="active">Home</a>
-
-    <a href="/choosencruise/html/carsearch.html">Search for a car</a>
-    <a href="../View/header/login.html" class="right">Login</a>
-    <a href="#" class="right">Sign Up</a>
-  </div>
--->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="http://localhost/choosencruise/mainpage.php"><img src="https://i.imgur.com/f4vds0H.png" style="width:100px;height:60px"></a>
@@ -31,19 +17,27 @@
       <?php
       session_start();
         if(isset($_SESSION['user_auth']) && $_SESSION['user_auth'] === true){
+
+          $user = $_SESSION['user'];
+
           echo "<div class=\"dropdown\">
             <button class=\"btn btn-success dropdown-toggle border-dark\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">
-              Welcome back, ". $_SESSION['user'] .
-            "!</button>
+              Welcome back, ". $user . "!</button>
             <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">
-              <a class=\"dropdown-item\" href=\"#\">My Account</a>
+              <a class=\"dropdown-item\" href=\"http://localhost/choosencruise/myaccount.php\">My Account</a>
               <div class=\"dropdown-divider\"></div>
               <a class=\"dropdown-item\" href=\"http://localhost/choosencruise/html/signout.php\">Sign out</a>
             </div>
           </div>";
+          /*
+          <input type=\"hidden\" id=\"user_auth\" value=\"".$_SESSION['user_auth']."\">
+          <input type=\"hidden\" id=\"username\" value=\"".$user."\">";
+          */
         }else{
           echo "<a class=\"nav-item nav-link\" href=\"http://localhost/choosencruise/html/login.php\">Login</a>
-                <a class=\"nav-item nav-link\" href=\"http://localhost/choosencruise/html/Signup.html\">Sign up</a>";
+                <a class=\"nav-item nav-link\" href=\"#\">Sign up</a>
+                <input type=\"hidden\" id=\"user_auth\" value=\"0\">
+                <input type=\"hidden\" id=\"user\" value=\"undefined\">";
         }
       ?>
     </div>
