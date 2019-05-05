@@ -40,28 +40,27 @@ if(isset($_GET['delivery'])){
 if(isset($_GET['appointment'])){
   $validationResult = Validate::all($_POST);
 
-  if($validationResult['status'] == true){
-    //insert in DB
-    $user_id = $_POST['user'];
-    $phone = $_POST['phone'];
-    $fname = $_POST['fname'];
-    $lname = $_POST['lname'];
-    $car_id = $_POST['car'];
-
-    $appt_date = date("Y-m-d",strtotime($_POST['req_date']));
-
+  if($_GET['appointment'] == 'all'){}
     $cc = new DBController($DBConnect);
-    $SQLString = "INSERT INTO appointment (cust_id,car_id,date_created, appointment_date, phone, first_name, last_name)
-      VALUES('$user_id','$car_id',now(),STR_TO_DATE('$appt_date','%Y-%m-%d'),'$phone','$fname','$lname')";
 
-    $result = $cc->queryInsert($SQLString);
-    $response = array('status'=>true,'result'=>$result);
-    echo json_encode($response);
-  }else if($validationResult['status'] == false){
-    //return error data from validation
-    echo json_encode($validationResult);
-  }else{
-    echo json_encode(array('status'=>null));
-  }
+    //order_id, car_img, (make,, model, year, trim), (carlot: name,street,city,state,zip,phone)
+    //appt_date, time, note
+
+    $SQLString = 'SELECT distinct a.appt_id,i.main_img_hash,c.make,c.model,c.trim,
+                                  c.year,cl.name,cl.street,cl.state,cl.city,
+                                  cl.zip,cl.phone,a.appointment_date,a.time
+				        from appointment as a
+                inner join cars as c on c.car_id = a.car_id
+                inner join carlots AS cl on c.carlot_id=cl.carlot_id
+                left join imgur_bank as i on i.car_id = a.car_id where cust_id='.$_SESSION['id'].' order by a.appt_id desc';
+    $result = $cc->queryGetAssoc($SQLString);
+
+    if($result != null){
+      $response = array('status'=>true,'result'=>$result);
+      echo json_encode($response);
+    }else{
+      $response = array('status'=>false,'result'=>null);
+      echo json_encode($response);
+    }
 }
 ?>
