@@ -41,6 +41,7 @@ $(document).ready(function() {
     });
 
     $('#err').removeClass('d-none');
+    $('#err').html('<div>Please verify your contact information. If any information is incorrect, please update it:</div>');
   }
 
   $.resetFields = function() {

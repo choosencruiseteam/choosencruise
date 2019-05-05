@@ -49,6 +49,7 @@ $(document).ready(function() {
       $field.removeClass('is-invalid');
     });
     $('#err').addClass('d-none');
+    $('#err').html('<div>Please verify your contact information. If any information is incorrect, please update it:</div>');
   }
 
   //Load head and footer data
