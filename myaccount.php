@@ -51,14 +51,14 @@
             </div>
             <div class="col-md-4 mb-3">
               <label for="validationCustom01">First name</label>
-              <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" value="Mark" required>
+              <input type="text" class="form-control" id="fname" name="fname" placeholder="First name" required>
               <div class="valid-feedback">
                 Looks good!
               </div>
             </div>
             <div class="col-md-4 mb-3">
               <label for="validationCustom02">Last name</label>
-              <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" value="Otto" required>
+              <input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" required>
               <div class="valid-feedback">
                 Looks good!
               </div>
@@ -105,29 +105,6 @@
           <button class="btn btn-primary" type="submit">Make Changes</button>
         </form> <!-- finish account content -->
 
-        <script>
-          // Example starter JavaScript for disabling form submissions if there are invalid fields
-          (function() {
-            'use strict';
-
-            window.addEventListener('load', function() {
-              // Fetch all the forms we want to apply custom Bootstrap validation styles to
-              var forms = document.getElementsByClassName('needs-validation');
-              // Loop over them and prevent submission
-              var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
-                  event.preventDefault();
-                  if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                  }
-                  form.classList.add('was-validated');
-                }, false);
-              });
-            }, false);
-          })();
-        </script>
-
       </div>
       <div class="tab-pane fade show active" id="nav-delivery" role="tabpanel" aria-labelledby="nav-delivery-tab">
 
@@ -148,7 +125,7 @@
       </div>
       <div class="tab-pane fade" id="nav-appointment" role="tabpanel" aria-labelledby="nav-appointment-tab">
         <div class="table-responsive">
-          <table class="table table-bordered">
+          <table class="table table-bordered" id="appointment_table">
             <thead class="thead-light">
               <tr>
                 <th>#</th>
@@ -158,29 +135,7 @@
                 <th>Notes</th>
               </tr>
             </thead>
-            <tr>
-              <td>290872</td>
-              <td style="width:200px">
-                <img src="https://i.imgur.com/PUbEIhu.jpg" alt="" width="200" height="auto">
-              </td>
-              <td style="min-width:200px">
-                <div>2018 Toyota Camry R</div>
-              </td>
-              <td style="min-width:170px">
-                <h5>Cruisin' Toyota</h5>
-                <div>123 address Street</div>
-                <div>San Antonio, TX 78109</div>
-                <div>(210)-124-9782</div>
-              </td>
-              <td style="min-width:170px">
-                <h5>Appt Date: 4/14/2019</h5>
-                <hr>
-                <h5>Time: pending</h5>
-              </td>
-              <td style="min-width:170px">
-                <div>The dealership will follow up with you soon.</div>
-              </td>
-            </tr>
+
           </table>
         </div>
       </div>
